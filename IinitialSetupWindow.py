@@ -12,7 +12,7 @@ class IinitialSetupWindow(QMainWindow):
     def __init__(self, windowName):
         super().__init__()
         self.setWindowTitle(windowName)
-        #self.setFixedSize(QSize(400, 150))
+        self.setFixedSize(QSize(400, 150))
 
         mainLayout = QVBoxLayout()
         buttonLayout = QHBoxLayout()

@@ -1,17 +1,14 @@
 import socket
 
-LOCAL_IP = '127.0.0.1'
-PORT = 15500
-LISTEN = 1
+UDP_LOCAL_IP = '127.0.0.1'
+UDP_PORT = 15500
 
 
 class ShareScreenServer:
 
     def __init__(self):
-        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.bind((LOCAL_IP, PORT))
-        self.server_socket.listen(LISTEN)
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.server_socket.bind((UDP_LOCAL_IP, UDP_PORT))
     
-    def accept_client(self):
-        client_socket, address = self.server_socket.accept()
-        print("Connection established with:", address)
+    def SendScreenshot():
+        pass
