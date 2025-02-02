@@ -7,27 +7,28 @@ from PyQt6.QtWidgets import (
     QApplication
 )
 from PyQt6.QtGui import QPixmap
-from mss import mss
+
 
 class ClientWindow(QMainWindow):
-    def __init__(self, windowName):
+    def __init__(self, window_name):
         super().__init__()
-        self.setWindowTitle(windowName)
+        self.setWindowTitle(window_name)
         #self.setFixedSize(QSize(400, 150))
 
-        mainLayout = QVBoxLayout()
+        main_layout = QVBoxLayout()
 
-        mainLayout.addWidget(QLabel('Live Screen Share'))
+        main_layout.addWidget(QLabel('Live Screen Share'))
 
-        imageWidget = QLabel()
-        with mss() as sct:
-            imageWidget.setPixmap(QPixmap(sct.shot()))
+        image_widget = QLabel()
+        
+        
+        image_widget.setPixmap(QPixmap())
 
-        mainLayout.addWidget(imageWidget)
+        main_layout.addWidget(image_widget)
 
 
         widget = QWidget()
-        widget.setLayout(mainLayout)
+        widget.setLayout(main_layout)
 
         self.setCentralWidget(widget)
         self.show()

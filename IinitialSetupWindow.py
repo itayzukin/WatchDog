@@ -5,30 +5,29 @@ from PyQt6.QtWidgets import (
     QVBoxLayout, 
     QHBoxLayout,
     QLabel,
-    QPushButton,
-    QColo
+    QPushButton
 )
 
 class IinitialSetupWindow(QMainWindow):
-    def __init__(self, windowName):
+    def __init__(self, window_name):
         super().__init__()
-        self.setWindowTitle(windowName)
+        self.setWindowTitle(window_name)
         self.setFixedSize(QSize(400, 150))
 
-        mainLayout = QVBoxLayout()
-        buttonLayout = QHBoxLayout()
+        maint_layout = QVBoxLayout()
+        button_layout = QHBoxLayout()
 
-        mainLayout.addWidget(QLabel().())
-        mainLayout.addWidget(QLabel('Welcome!'))
-        mainLayout.addWidget(QLabel('Are you setting this computer as an admin or a user?'))
+        maint_layout.addWidget() # add color
+        maint_layout.addWidget(QLabel('Welcome!'))
+        maint_layout.addWidget(QLabel('Are you setting this computer as an admin or a user?'))
 
-        buttonLayout.addWidget(QPushButton('Admin'))
-        buttonLayout.addWidget(QPushButton('User'))
+        button_layout.addWidget(QPushButton('Admin'))
+        button_layout.addWidget(QPushButton('User'))
 
-        mainLayout.addLayout(buttonLayout)
+        maint_layout.addLayout(button_layout)
 
         widget = QWidget()
-        widget.setLayout(mainLayout)
+        widget.setLayout(maint_layout)
 
         self.setCentralWidget(widget)
         self.show()
