@@ -5,7 +5,8 @@ from PyQt6.QtWidgets import (
     QVBoxLayout, 
     QHBoxLayout,
     QLabel,
-    QPushButton
+    QPushButton,
+    QColo
 )
 
 class IinitialSetupWindow(QMainWindow):
@@ -17,6 +18,7 @@ class IinitialSetupWindow(QMainWindow):
         mainLayout = QVBoxLayout()
         buttonLayout = QHBoxLayout()
 
+        mainLayout.addWidget(QLabel().())
         mainLayout.addWidget(QLabel('Welcome!'))
         mainLayout.addWidget(QLabel('Are you setting this computer as an admin or a user?'))
 
