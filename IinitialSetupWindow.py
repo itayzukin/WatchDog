@@ -17,7 +17,7 @@ class IinitialSetupWindow(QMainWindow):
         maint_layout = QVBoxLayout()
         button_layout = QHBoxLayout()
 
-        maint_layout.addWidget() # add color
+        #maint_layout.addWidget() # add color
         maint_layout.addWidget(QLabel('Welcome!'))
         maint_layout.addWidget(QLabel('Are you setting this computer as an admin or a user?'))
 
