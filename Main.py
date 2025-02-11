@@ -1,9 +1,9 @@
 from PyQt6.QtWidgets import QApplication
-from IinitialSetupWindow import IinitialSetupWindow
+from initial_setup_window import InitialSetupWindow
 
 def main():
     app = QApplication([])
-    window = IinitialSetupWindow('WatchDog')
+    window = InitialSetupWindow('WatchDog')
     app.exec()
 
 
