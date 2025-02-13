@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QPixmap
 
 
-class ClientWindow(QMainWindow):
+class AdminWindow(QMainWindow):
     def __init__(self, window_name):
         super().__init__()
         self.setWindowTitle(window_name)
@@ -35,5 +35,5 @@ class ClientWindow(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication([])
-    window = ClientWindow('WatchDog')
+    window = AdminWindow('WatchDog')
     app.exec()
