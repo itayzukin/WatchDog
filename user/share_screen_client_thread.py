@@ -1,39 +1,45 @@
 import socket
-import os
+from mss import mss
+from time import sleep
 import threading
 
-UDP_LOCAL_IP = '127.0.0.1'
-UDP_PORT = 15500
-RECV = 1024
+FPS = 24
 
-class ShareScreenServer:
+class ShareScreenClient:
 
-    def __init__(self):
+    def __init__(self, target_IP, target_port):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.server_socket.bind((UDP_LOCAL_IP, UDP_PORT))
-        
+        self.address = (target_IP, target_port)
     
-    def recv_images(self):
-        data, server = self.server_socket.recvfrom(RECV)
-        try:
-            os.remove('rec-image.png')
-        finally:
-            file = open('rec-image.png', 'wb')
-            file.write(data)
-            print("hapoel zona")
-            print("hapoel motsetset lkol hashhona")
+    def send_screenshot(self):
+        """ Take a screenshot and send it """
+
+        with mss() as sct:
+            image_file_name = sct.shot()
+        image_file = open(image_file_name, 'rb')
+
+        self.server_socket.sendto(image_file.read(), self.address)
 
 
-class ShareScreenServerThread(threading.Thread):
+class ShareScreenClientThread(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self, daemon=False)
-        self.server = ShareScreenServer()
+        self.server = ShareScreenClient()
 
     def run(self):
         while True:
-            self.server.recv_images()
+            sleep(1.0 / FPS)
+            self.server.send_screenshot()
 
     def join(self):
         threading.Thread.join(self)
 
+
+# TEMP MAIN METHOD - DO NOT RUN INDEPENDENT ON THE FUTURE
+def main():
+    thread = ShareScreenClientThread()
+    thread.start()
+
+if __name__ == '__main__':
+    main()
