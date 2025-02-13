@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
     QApplication
 )
 from PyQt6.QtGui import QPixmap
-
+from share_screen_server_thread import ShareScreenServerThread
 
 class AdminWindow(QMainWindow):
     def __init__(self, window_name):
@@ -34,6 +34,9 @@ class AdminWindow(QMainWindow):
         self.show()
 
 if __name__ == '__main__':
-    app = QApplication([])
-    window = AdminWindow('WatchDog')
-    app.exec()
+    #app = QApplication([])
+    #window = AdminWindow('WatchDog')
+    thread = ShareScreenServerThread()
+    thread.start()
+    #app.exec()
+    #thread.join()

@@ -14,12 +14,19 @@ class ShareScreenServer:
         
     
     def recv_images(self):
-        data, server = self.server_socket.recvfrom(RECV)
         try:
             os.remove('rec-image.png')
         finally:
             file = open('rec-image.png', 'wb')
-            file.write(data)
+            data, server = self.server_socket.recvfrom(RECV)
+            
+            while data != b'':
+                print(data)
+                file.write(data)
+                data, server = self.server_socket.recvfrom(RECV)
+
+            file.close()
+            print("REC")
 
 
 class ShareScreenServerThread(threading.Thread):
