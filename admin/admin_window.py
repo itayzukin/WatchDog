@@ -34,9 +34,9 @@ class AdminWindow(QMainWindow):
         self.show()
 
 if __name__ == '__main__':
-    #app = QApplication([])
-    #window = AdminWindow('WatchDog')
-    thread = ShareScreenServerThread()
-    thread.start()
-    #app.exec()
+    app = QApplication([])
+    window = AdminWindow('WatchDog')
+    #thread = ShareScreenServerThread()
+    #thread.start()
+    app.exec()
     #thread.join()

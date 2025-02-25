@@ -4,6 +4,8 @@ from time import sleep
 import threading
 
 FPS = 24
+RECV_SIZE = 4096
+
 
 class ShareScreenClient:
 
@@ -15,14 +17,14 @@ class ShareScreenClient:
         """ Take a screenshot and send it """
 
         with mss() as sct:
-            image_file_name = sct.shot(output = 'user/monitor.png')
+            image_file_name = sct.shot(output = 'monitor.png')
 
         image_file = open(image_file_name, 'rb')
-        file_part = image_file.read(1024)
+        file_part = image_file.read(RECV_SIZE)
         while file_part:
             self.server_socket.sendto(file_part, self.address)
-            file_part = image_file.read(1024)
-        self.server_socket.sendto(b'', self.address)
+            file_part = image_file.read(RECV_SIZE)
+        self.server_socket.sendto(b'EOF', self.address)
         print("END")
 
 
@@ -37,14 +39,7 @@ class ShareScreenClientThread(threading.Thread):
             sleep(1.0 / FPS)
             self.server.send_screenshot()
 
-    def join(self):
-        threading.Thread.join(self)
-
 
 # TEMP MAIN METHOD - DO NOT RUN INDEPENDENT ON THE FUTURE
-def main():
-    thread = ShareScreenClientThread("127.0.0.1",15500)
-    thread.start()
-
-if __name__ == '__main__':
-    main()
+thread = ShareScreenClientThread("127.0.0.1",15500)
+thread.start()

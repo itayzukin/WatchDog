@@ -4,7 +4,8 @@ import threading
 
 UDP_LOCAL_IP = '127.0.0.1'
 UDP_PORT = 15500
-RECV = 1024
+RECV_SIZE = 4096
+
 
 class ShareScreenServer:
 
@@ -14,19 +15,21 @@ class ShareScreenServer:
         
     
     def recv_images(self):
-        try:
-            os.remove('rec-image.png')
-        finally:
-            file = open('rec-image.png', 'wb')
-            data, server = self.server_socket.recvfrom(RECV)
-            
-            while data != b'':
-                print(data)
-                file.write(data)
-                data, server = self.server_socket.recvfrom(RECV)
+        """ Open img and insert recieved data """
+        file = open('queued-image.png', 'wb') 
+        while True:
+            data, _server = self.server_socket.recvfrom(4096) 
+            if data == b'EOF':
+                break
+            file.write(data) 
+        file.close()
 
-            file.close()
-            print("REC")
+        try:
+            os.remove("curr-image.png")
+        except OSError:
+            pass
+        os.rename("queued-image.png","curr-image.png")
+        print("REC")
 
 
 class ShareScreenServerThread(threading.Thread):
@@ -39,6 +42,7 @@ class ShareScreenServerThread(threading.Thread):
         while True:
             self.server.recv_images()
 
-    def join(self):
-        threading.Thread.join(self)
 
+if __name__ == '__main__':
+    thread = ShareScreenServerThread()
+    thread.start()
