@@ -15,8 +15,11 @@ class ShareScreenServer:
         
     
     def recv_images(self):
-        """ Open img and insert recieved data """
-        file = open('queued-image.png', 'wb') 
+        """ Receive image and save it """
+        temp_file = "queued-image.png"
+        final_file = "curr-image.png"
+
+        file = open(temp_file, 'wb') 
         while True:
             data, _server = self.server_socket.recvfrom(4096) 
             if data == b'EOF':
@@ -25,10 +28,11 @@ class ShareScreenServer:
         file.close()
 
         try:
-            os.remove("curr-image.png")
-        except OSError:
+            os.remove(final_file)
+        except Exception as e:
+            print(e)
             pass
-        os.rename("queued-image.png","curr-image.png")
+        os.rename(temp_file, final_file)
         print("REC")
 
 
