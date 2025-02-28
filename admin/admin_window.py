@@ -39,8 +39,8 @@ class AdminWindow(QMainWindow):
         # Set up a timer to refresh the QLabel every 100ms (check this code later)
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_image)
-        self.timer.start(math.floor(1/FPS))  # Refresh rate of 100ms
-
+        self.timer.start(math.floor(1/FPS))
+        
         self.show()
 
     def update_image(self):

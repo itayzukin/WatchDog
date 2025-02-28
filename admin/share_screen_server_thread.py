@@ -4,7 +4,7 @@ import threading
 
 UDP_LOCAL_IP = '127.0.0.1'
 UDP_PORT = 15500
-RECV_SIZE = 4096
+RECV_SIZE = 2096
 
 
 class ShareScreenServer:
@@ -21,8 +21,9 @@ class ShareScreenServer:
 
         file = open(temp_file, 'wb') 
         while True:
-            data, _server = self.server_socket.recvfrom(4096) 
+            data, server = self.server_socket.recvfrom(RECV_SIZE) 
             if data == b'EOF':
+                server.send('ACK'.encode())
                 break
             file.write(data) 
         file.close()
@@ -30,7 +31,7 @@ class ShareScreenServer:
         try:
             os.remove(final_file)
         except Exception as e:
-            print(e)
+            print("EX", e)
             pass
         os.rename(temp_file, final_file)
         print("REC")
@@ -43,8 +44,8 @@ class ShareScreenServerThread(threading.Thread):
         self.server = ShareScreenServer()
 
     def run(self):
-        while True:
-            self.server.recv_images()
+        #while True:
+        self.server.recv_images()
 
 
 if __name__ == '__main__':

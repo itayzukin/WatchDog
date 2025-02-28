@@ -4,7 +4,7 @@ from time import sleep
 import threading
 
 FPS = 24
-RECV_SIZE = 4096
+RECV_SIZE = 2096
 
 
 class ShareScreenClient:
