@@ -1,0 +1,1 @@
+buffered_image = None

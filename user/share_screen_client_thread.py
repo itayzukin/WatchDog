@@ -24,7 +24,7 @@ class ShareScreenClient:
         while file_part:
             self.server_socket.sendto(file_part, self.address)
             file_part = image_file.read(RECV_SIZE)
-        self.server_socket.sendto(b'EOF', self.address)
+        self.server_socket.sendto(b'EOF', self.address)    
         print("END")
 
 
