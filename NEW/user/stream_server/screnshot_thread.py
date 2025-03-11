@@ -13,15 +13,15 @@ class ScreenshotThread(threading.Thread):
     def run(self):
         global buffered_image
 
-        while True:
-            sleep(1/24)
-            buffered_image = self.capture_and_compress()
+        #while True:
+        sleep(1/60)
+        buffered_image = self.capture_and_compress()
 
     def capture_and_compress(self):
-        """ Capture monitor, compress and save to variable"""
+        """ Capture monitor and compress to buffered_image"""
 
         with mss() as sct:
-            screenshot = sct.grab(sct.monitors[1])  # Capture first monitor
+            screenshot = sct.grab(sct.monitors[1])
 
             # Convert raw screenshot data to a PIL Image
             img = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
@@ -30,6 +30,7 @@ class ScreenshotThread(threading.Thread):
             img_buffer = io.BytesIO()
             img.save(img_buffer, format="JPEG", quality=20, optimize=True)
 
-            compressed_img_bytes = img_buffer.getvalue()  # Get the compressed image as bytes
+            # Get the compressed image as bytes
+            compressed_img_bytes = img_buffer.getvalue()
 
             return compressed_img_bytes
