@@ -1,5 +1,5 @@
 from udp_thread import UDPThread
-from screnshot_thread import ScreenshotThread
+from screenshot_thread import ScreenshotThread
 
 thread1 = ScreenshotThread()
 thread2 = UDPThread()

@@ -1,5 +1,4 @@
 import socket
-from mss import mss
 from time import sleep
 import threading
 from global_vars import buffered_image, addresses_list
@@ -12,26 +11,27 @@ class UDPThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self, daemon=False)
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.current_image = buffered_image
     
     def run(self):
-        while addresses_list:
+        global buffered_image
+        
+        while len(addresses_list) != 0:
+            print(buffered_image)
             sleep(1.0 / FPS)
-            if buffered_image != self.current_image:
-                self.current_image = buffered_image
-                self.server.send_screenshot()
+            self.send_screenshot()
     
     def send_everyone(self, data):
+        """ Sends data to all clients"""
         for address in addresses_list:
             self.server_socket.sendto(data, address)
 
     def send_screenshot(self):
-        image_data = self.current_image
+        image_data = buffered_image
 
-        self.server_socket.send_everyone(b'SOF')   
+        self.send_everyone(b'SOF')   
         while image_data:
             chunk = image_data[:CHUNK_SIZE]  # Take first CHUNK_SIZE bytes
-            self.server_socket.send_everyone(chunk)  # Send the chunk
+            self.send_everyone(chunk)  # Send the chunk
             image_data = image_data[CHUNK_SIZE:]  # Remove sent chunk
-        self.server_socket.send_everyone(b'EOF')  
+        self.send_everyone(b'EOF')  
         print("FILE SENT")
