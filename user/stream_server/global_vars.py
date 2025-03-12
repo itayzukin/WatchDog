@@ -2,4 +2,4 @@
 buffered_image = None
 
 # all the addresses of clients receiving images
-addresses_list = []
+addresses_list = [('127.0.0.1', 15500)]

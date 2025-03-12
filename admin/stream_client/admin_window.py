@@ -5,14 +5,15 @@ from PyQt6.QtWidgets import (
     QWidget, 
     QVBoxLayout,
     QLabel,
-    QApplication,
-    QSizePolicy
+    QApplication
 )
-from PyQt6.QtGui import QPixmap
-from share_screen_server_thread import ShareScreenServerThread
+from PyQt6.QtGui import QPixmap, QImage
+from global_vars import buffered_image
 import math
 
-FPS = 24
+import udp_thread
+
+FPS = 60
 
 class AdminWindow(QMainWindow):
     def __init__(self, window_name):
@@ -32,9 +33,6 @@ class AdminWindow(QMainWindow):
         widget = QWidget()
         widget.setLayout(main_layout)
         self.setCentralWidget(widget)
-
-        server_thread = ShareScreenServerThread()
-        server_thread.start()
         
         # Set up a timer to refresh the QLabel every 100ms (check this code later)
         self.timer = QTimer(self)
@@ -44,13 +42,20 @@ class AdminWindow(QMainWindow):
         self.show()
 
     def update_image(self):
-        """ Load the latest received image and update QLabel (check this function later) """
-        if os.path.exists("curr-image.png"):
-            pixmap = QPixmap("curr-image.png")
-            if not pixmap.isNull():  # Ensure image is valid before updating
-                self.image_widget.setPixmap(QPixmap("curr-image.png"))
+        """ Check for new image data and update QLabel """
+        global buffered_image
+
+        if buffered_image:  # If new image data is available
+            try:
+                image = QImage.fromData(buffered_image)
+                if not image.isNull():  # Ensure image is valid before updating
+                    self.image_widget.setPixmap(QPixmap.fromImage(image))
+            except Exception as e:
+                print(f"Error loading image: {e}")
 
 if __name__ == '__main__':
     app = QApplication([])
+    thread = udp_thread.UDPThread()
+    thread.start()
     window = AdminWindow('WatchDog')
     app.exec()

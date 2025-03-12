@@ -32,5 +32,5 @@ class ScreenshotThread(threading.Thread):
 
             # Get the compressed image as bytes
             compressed_img_bytes = img_buffer.getvalue()
-
+            print("SAVE IMAGE TO BUFFER")
             return compressed_img_bytes
