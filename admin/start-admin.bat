@@ -1,2 +1,0 @@
-python share_screen_server_thread.py
-PAUSE

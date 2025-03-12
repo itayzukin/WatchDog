@@ -13,9 +13,9 @@ class ScreenshotThread(threading.Thread):
     def run(self):
         global buffered_image
 
-        #while True:
-        sleep(1/60)
-        buffered_image = self.capture_and_compress()
+        while True:
+            sleep(1/60)
+            buffered_image = self.capture_and_compress()
 
     def capture_and_compress(self):
         """ Capture monitor and compress to buffered_image"""
