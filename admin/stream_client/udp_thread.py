@@ -1,6 +1,4 @@
 import socket
-from mss import mss
-from time import sleep
 import threading
 from global_vars import buffered_image
 
@@ -26,6 +24,7 @@ class UDPThread(threading.Thread):
     def receive_screenshot(self):
         global buffered_image
         
+        image_data = b''
         while True:
             data, _ = self.server_socket.recvfrom(CHUNK_SIZE)
             if data == b'EOF':

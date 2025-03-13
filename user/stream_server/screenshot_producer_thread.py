@@ -1,21 +1,25 @@
 from time import sleep
 from mss import mss
 from PIL import Image
-from global_vars import buffered_image
+from global_vars import buffered_image, condition
 import threading
 import io
 
-class ScreenshotThread(threading.Thread):
+class ScreenshotProducerThread(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self, daemon=False)
 
     def run(self):
         global buffered_image
+        global condition
 
         while True:
             sleep(1/60)
+            condition.acquire()
             buffered_image = self.capture_and_compress()
+            condition.notify()
+            condition.release()
 
     def capture_and_compress(self):
         """ Capture monitor and compress to buffered_image"""

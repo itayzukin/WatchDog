@@ -1,8 +1,8 @@
-from udp_thread import UDPThread
-from screenshot_thread import ScreenshotThread
+from screenshot_producer_thread import ScreenshotProducerThread
+from udp_client_consumer_thread import UDPClientConsumerThread
 
-thread1 = ScreenshotThread()
-thread2 = UDPThread()
+thread1 = ScreenshotProducerThread()
+thread2 = UDPClientConsumerThread()
 
 thread1.start()
 thread2.start()

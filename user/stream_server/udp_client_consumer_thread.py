@@ -1,12 +1,11 @@
 import socket
-from time import sleep
 import threading
-from global_vars import buffered_image, addresses_list
+from global_vars import buffered_image, condition, addresses_list
 
 FPS = 60
 CHUNK_SIZE = 2048
 
-class UDPThread(threading.Thread):
+class UDPClientConsumerThread(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self, daemon=False)
@@ -14,11 +13,17 @@ class UDPThread(threading.Thread):
     
     def run(self):
         global buffered_image
+        global condition
         
-        while len(addresses_list) != 0:
-            print(buffered_image)
-            sleep(1.0 / FPS)
-            self.send_screenshot()
+        while True:
+            if len(addresses_list) != 0:
+                condition.acquire()
+                if not buffered_image:
+                    condition.wait()
+                self.send_screenshot()
+                condition.release()
+
+                print(buffered_image)
     
     def send_everyone(self, data):
         """ Sends data to all clients"""

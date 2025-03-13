@@ -9,9 +9,8 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QPixmap, QImage
 from global_vars import buffered_image
-import math
-
 import udp_thread
+import math
 
 FPS = 60
 
@@ -52,6 +51,7 @@ class AdminWindow(QMainWindow):
                     self.image_widget.setPixmap(QPixmap.fromImage(image))
             except Exception as e:
                 print(f"Error loading image: {e}")
+
 
 if __name__ == '__main__':
     app = QApplication([])
