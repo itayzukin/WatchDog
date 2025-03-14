@@ -1,11 +1,11 @@
 import socket
 import threading
-from global_vars import buffered_image
+import global_vars as gv
 
 FPS = 60
 UDP_IP = '127.0.0.1'
 UDP_PORT = 15500
-CHUNK_SIZE = 2048
+CHUNK_SIZE = 4096
 
 class UDPThread(threading.Thread):
 
@@ -22,8 +22,6 @@ class UDPThread(threading.Thread):
                 self.receive_screenshot()
 
     def receive_screenshot(self):
-        global buffered_image
-        
         image_data = b''
         while True:
             data, _ = self.server_socket.recvfrom(CHUNK_SIZE)
@@ -31,4 +29,4 @@ class UDPThread(threading.Thread):
                 break
             image_data += data
 
-        buffered_image = image_data
+        gv.buffered_image = image_data

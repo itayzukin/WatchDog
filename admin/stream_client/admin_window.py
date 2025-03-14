@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import (
     QApplication
 )
 from PyQt6.QtGui import QPixmap, QImage
-from global_vars import buffered_image
+import global_vars as gv
 import udp_thread
 import math
 
@@ -42,15 +42,16 @@ class AdminWindow(QMainWindow):
 
     def update_image(self):
         """ Check for new image data and update QLabel """
-        global buffered_image
-
-        if buffered_image:  # If new image data is available
-            try:
-                image = QImage.fromData(buffered_image)
-                if not image.isNull():  # Ensure image is valid before updating
-                    self.image_widget.setPixmap(QPixmap.fromImage(image))
-            except Exception as e:
-                print(f"Error loading image: {e}")
+        if gv.buffered_image:  # If new image data is available
+            image = QImage.fromData(gv.buffered_image)
+            if not image.isNull():  # Ensure image is valid before updating
+                pixmap = QPixmap.fromImage(image)
+                scaled_pixmap = pixmap.scaled(
+                    self.image_widget.size(), 
+                    Qt.AspectRatioMode.KeepAspectRatioByExpanding, 
+                    Qt.TransformationMode.SmoothTransformation
+                )
+                self.image_widget.setPixmap(scaled_pixmap)
 
 
 if __name__ == '__main__':

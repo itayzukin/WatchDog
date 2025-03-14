@@ -1,9 +1,9 @@
 import socket
 import threading
-from global_vars import buffered_image, condition, addresses_list
+import global_vars as gv
 
 FPS = 60
-CHUNK_SIZE = 2048
+CHUNK_SIZE = 4096
 
 class UDPClientConsumerThread(threading.Thread):
 
@@ -12,26 +12,21 @@ class UDPClientConsumerThread(threading.Thread):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     
     def run(self):
-        global buffered_image
-        global condition
-        
         while True:
-            if len(addresses_list) != 0:
-                condition.acquire()
-                if not buffered_image:
-                    condition.wait()
+            if len(gv.addresses_list) != 0:
+                gv.condition.acquire()
+                if not gv.buffered_image:
+                    gv.condition.wait()
                 self.send_screenshot()
-                condition.release()
-
-                print(buffered_image)
+                gv.condition.release()
     
     def send_everyone(self, data):
         """ Sends data to all clients"""
-        for address in addresses_list:
+        for address in gv.addresses_list:
             self.server_socket.sendto(data, address)
 
     def send_screenshot(self):
-        image_data = buffered_image
+        image_data = gv.buffered_image
 
         self.send_everyone(b'SOF')   
         while image_data:
