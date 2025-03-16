@@ -10,7 +10,7 @@ CHUNK_SIZE = 4096
 class UDPServerThread(threading.Thread):
 
     def __init__(self):
-        threading.Thread.__init__(self, daemon=False)
+        threading.Thread.__init__(self)
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_socket.bind((UDP_IP, UDP_PORT))
     
@@ -26,8 +26,8 @@ class UDPServerThread(threading.Thread):
         """ Receive image data over UDP """
         image_chunks = {}
         image_data = b''
-        total_chunks = 0
-        not_done = False
+        total_chunks = -1
+        chunk_size = CHUNK_SIZE - 4
 
         while True:
             data, _ = self.server_socket.recvfrom(CHUNK_SIZE)
@@ -51,6 +51,6 @@ class UDPServerThread(threading.Thread):
             if i in image_chunks:  
                 image_data += image_chunks[i]
             else:
-                image_data += b'\x00' * (CHUNK_SIZE - 4)
+                image_data += b'\x00' * chunk_size
         
         gv.buffered_image = image_data

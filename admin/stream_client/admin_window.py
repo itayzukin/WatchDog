@@ -36,7 +36,10 @@ class AdminWindow(QMainWindow):
         # Set up a timer to refresh the QLabel every 100ms (check this code later)
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_image)
-        self.timer.start(math.floor(1/FPS))
+        self.timer.start(1000 // FPS)
+
+        self.thread = udp_server_thread.UDPServerThread()
+        self.thread.start()
         
         self.show()
 
@@ -56,7 +59,5 @@ class AdminWindow(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication([])
-    thread = udp_server_thread.UDPServerThread()
-    thread.start()
     window = AdminWindow('WatchDog')
     app.exec()
