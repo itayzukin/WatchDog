@@ -1,5 +1,5 @@
 import os
-from PyQt6.QtCore import QSize, Qt, QTimer
+from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtWidgets import (
     QMainWindow, 
     QWidget, 
@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QPixmap, QImage
 import global_vars as gv
-import udp_thread
+import udp_server_thread
 import math
 
 FPS = 60
@@ -56,7 +56,7 @@ class AdminWindow(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication([])
-    thread = udp_thread.UDPThread()
+    thread = udp_server_thread.UDPServerThread()
     thread.start()
     window = AdminWindow('WatchDog')
     app.exec()

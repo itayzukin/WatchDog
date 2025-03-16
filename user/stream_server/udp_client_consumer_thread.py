@@ -26,12 +26,17 @@ class UDPClientConsumerThread(threading.Thread):
             self.server_socket.sendto(data, address)
 
     def send_screenshot(self):
+        """ Send screenshot to set clients over UDP"""
         image_data = gv.buffered_image
 
         self.send_everyone(b'SOF')   
+        chunk_index = 0
         while image_data:
-            chunk = image_data[:CHUNK_SIZE]  # Take first CHUNK_SIZE bytes
-            self.send_everyone(chunk)  # Send the chunk
-            image_data = image_data[CHUNK_SIZE:]  # Remove sent chunk
+            chunk = image_data[:CHUNK_SIZE - 4]
+            chunk_header = f"{chunk_index:04d}".encode()
+            self.send_everyone(chunk_header + chunk)
+            chunk_index += 1
+            image_data = image_data[CHUNK_SIZE - 4:]
+        
         self.send_everyone(b'EOF')  
         print("FILE SENT")
