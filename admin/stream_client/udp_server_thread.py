@@ -1,8 +1,8 @@
 import socket
 import threading
+import hashlib
 import global_vars as gv
 
-FPS = 60
 UDP_IP = '127.0.0.1'
 UDP_PORT = 15500
 CHUNK_SIZE = 4096
@@ -18,39 +18,29 @@ class UDPServerThread(threading.Thread):
         while True:
             data, _ = self.server_socket.recvfrom(CHUNK_SIZE)
 
-            if data == b'SOF':
-                self.receive_screenshot()
-
+            if data.startswith(b'CHECKSUM:'):
+                expected_checksum = data.split(b':')[1].decode()
+                print("Received checksum:", expected_checksum)
+                self.recv_screenshot(expected_checksum)
     
-    def receive_screenshot(self):
+    def recv_screenshot(self, expected_checksum):
         """ Receive image data over UDP """
-        image_chunks = {}
-        image_data = b''
-        total_chunks = -1
-        chunk_size = CHUNK_SIZE - 4
+        received_data = b""
 
         while True:
             data, _ = self.server_socket.recvfrom(CHUNK_SIZE)
 
-            if data == b'EOF':
+            if data == b'SOF':
+                received_data = b""
+                continue
+            elif data == b'EOF':
                 break
             
-            try:
-                chunk_index = int(data[:4].decode())
-                chunk_data = data[4:]
-                
-                if chunk_index not in image_chunks:
-                    image_chunks[chunk_index] = chunk_data
-                    total_chunks = max(total_chunks, chunk_index)
+            received_data += data
 
-            except ValueError:
-                print("Invalid packet received, skipping...")
-                continue
-
-        for i in range(total_chunks + 1):
-            if i in image_chunks:  
-                image_data += image_chunks[i]
-            else:
-                image_data += b'\x00' * chunk_size
-        
-        gv.buffered_image = image_data
+        actual_checksum = hashlib.md5(received_data).hexdigest()
+        if actual_checksum == expected_checksum:
+            gv.buffered_image = received_data
+            print("Image received successfully!")
+        else:
+            print("Checksum mismatch! Image may be corrupted. Requesting retransmission...")
