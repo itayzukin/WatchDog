@@ -10,26 +10,23 @@ class ScreenshotProducerThread(threading.Thread):
         threading.Thread.__init__(self, daemon=True)
 
     def run(self):
-
         while True:
+            gv.buffered_image = self.save_image()
+            print("Image saved to buffer")
             with gv.condition:
-                gv.buffered_image = self.capture_and_compress()
                 gv.condition.notify()
 
-    def capture_and_compress(self):
+    def save_image(self):
         """ Capture monitor and compress to buffered_image"""
-
         with mss() as sct:
             screenshot = sct.grab(sct.monitors[1])
-
-            # Convert raw screenshot data to a PIL Image
-            img = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
-
-            # Store compressed image in memory using BytesIO
-            img_buffer = io.BytesIO()
-            img.save(img_buffer, format="JPEG", quality=40, optimize=True)
-
-            # Get the compressed image as bytes
-            compressed_img_bytes = img_buffer.getvalue()
-            print("Image saved to buffer.")
-            return compressed_img_bytes
+            compressed_screenshot = self.compress_image(screenshot)
+            compressed_screenshot_bytes = compressed_screenshot.getvalue()
+            return compressed_screenshot_bytes
+        
+    def compress_image(self, image, quality=40):
+        """Compress given image"""
+        img = Image.frombytes("RGB", image.size, image.rgb)
+        img_buffer = io.BytesIO()
+        img.save(img_buffer, "JPEG", quality=quality, optimize=True)
+        return img_buffer

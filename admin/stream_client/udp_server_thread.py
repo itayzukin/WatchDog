@@ -5,7 +5,7 @@ import global_vars as gv
 
 UDP_IP = '127.0.0.1'
 UDP_PORT = 15500
-CHUNK_SIZE = 4096
+CHUNK_SIZE = 8192
 
 class UDPServerThread(threading.Thread):
 
@@ -15,6 +15,8 @@ class UDPServerThread(threading.Thread):
         self.server_socket.bind((UDP_IP, UDP_PORT))
     
     def run(self):
+        print("Starting server on port: {UDP_PORT}")
+
         while True:
             data, _ = self.server_socket.recvfrom(CHUNK_SIZE)
 
@@ -43,4 +45,4 @@ class UDPServerThread(threading.Thread):
             gv.buffered_image = received_data
             print("Image received successfully!")
         else:
-            print("Checksum mismatch! Image may be corrupted. Requesting retransmission...")
+            print("Checksum mismatch! Image may be corrupted.")
