@@ -5,7 +5,7 @@ import global_vars as gv
 SOF_FLAG = b'SOF'
 EOF_FLAG = b'EOF'
 TCP_PORT = 15500
-TCP_IP = '127.0.0.1'
+TCP_IP = '192.168.1.112'
 
 class TCPServerConsumerThread(threading.Thread):
 

@@ -9,7 +9,6 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QPixmap, QImage
 import global_vars as gv
-import cv2
 from tcp_client_thread import TCPClientThread
 
 FPS = 60
