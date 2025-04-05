@@ -4,7 +4,7 @@ import global_vars as gv
 
 SOF_FLAG = b'SOF'
 EOF_FLAG = b'EOF'
-BUFFER_SIZE = 8192*4
+BUFFER_SIZE = 8192
 SERVER_IP = '192.168.1.112'
 SERVER_PORT = 15500
 

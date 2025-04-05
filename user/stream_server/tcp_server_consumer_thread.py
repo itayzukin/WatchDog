@@ -32,6 +32,6 @@ class TCPServerConsumerThread(threading.Thread):
         """ Sends data to all clients"""
         for socket in gv.client_socket_list:
             try:
-                socket.send(data)
+                socket.sendall(data)
             except:
                 gv.client_socket_list.remove(socket)
