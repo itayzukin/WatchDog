@@ -9,8 +9,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QPixmap, QImage
 import global_vars as gv
-import udp_server_thread
-import math
+from tcp_client_thread import TCPClientThread
 
 FPS = 60
 
@@ -38,7 +37,7 @@ class AdminWindow(QMainWindow):
         self.timer.timeout.connect(self.update_image)
         self.timer.start(1000 // FPS)
 
-        self.thread = udp_server_thread.UDPServerThread()
+        self.thread = TCPClientThread()
         self.thread.start()
         
         self.show()
