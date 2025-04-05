@@ -11,31 +11,18 @@ class TCPClientThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        
-
-    def run(self):
         self.client_socket.connect((SERVER_IP, SERVER_PORT))
 
-        while True:
-            data = self.client_socket.recv(CHUNK_SIZE)
-            print(data)
-
-            if data == b'SOF':
-                self.recv_screenshot()
-                break
-    
-    def recv_screenshot(self):
-        """ Receive image data over TCP """
-        received_data = b""
+    def run(self):
+        print(f"Connected to TCP server on port: {SERVER_PORT}")
+        image = b''
 
         while True:
-            data = self.client_socket.recv(CHUNK_SIZE)
-            
-            if data == b'EOF':
-                print(data)
-                break
+            while True:
+                data = self.client_socket.recv(CHUNK_SIZE)
+                if not data:
+                    break
 
-            received_data += data
+                image += data
 
-        gv.buffered_image = received_data
-        print("Image received successfully!")
+            gv.buffered_image = image
