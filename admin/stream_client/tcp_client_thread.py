@@ -2,8 +2,10 @@ import socket
 import threading
 import global_vars as gv
 
-CHUNK_SIZE = 8192
-SERVER_IP = '127.0.0.1'
+SOF_FLAG = b'SOF'
+EOF_FLAG = b'EOF'
+BUFFER_SIZE = 8192*4
+SERVER_IP = '192.168.1.112'
 SERVER_PORT = 15500
 
 class TCPClientThread(threading.Thread):
@@ -18,11 +20,22 @@ class TCPClientThread(threading.Thread):
         image = b''
 
         while True:
-            while True:
-                data = self.client_socket.recv(CHUNK_SIZE)
-                if not data:
-                    break
+            data = self.client_socket.recv(BUFFER_SIZE)
+            print(data)
 
+            if SOF_FLAG in data:
+                splitted = data.split(SOF_FLAG)
+                
+                if EOF_FLAG in splitted[0]:
+                    image += splitted[0].split(EOF_FLAG)[0]
+                    gv.buffered_image = image
+
+                image = splitted[-1]
+
+            elif EOF_FLAG in splitted[-1]:
+                image += splitted[0].split(EOF_FLAG)[0]
+                gv.buffered_image = image
+                image = b''
+
+            else:
                 image += data
-
-            gv.buffered_image = image

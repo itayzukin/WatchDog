@@ -2,6 +2,8 @@ import socket
 import threading
 import global_vars as gv
 
+SOF_FLAG = b'SOF'
+EOF_FLAG = b'EOF'
 TCP_PORT = 15500
 TCP_IP = '127.0.0.1'
 
@@ -23,12 +25,13 @@ class TCPServerConsumerThread(threading.Thread):
                 while not gv.buffered_image:
                     gv.condition.wait()
                 image_data = gv.buffered_image
-            self.send_clients(image_data)
+            self.send_clients(SOF_FLAG + image_data + EOF_FLAG)
+            print("Image sent to client")
 
     def send_clients(self, data):
         """ Sends data to all clients"""
         for socket in gv.client_socket_list:
             try:
-                socket.sendall(data)
+                socket.send(data)
             except:
                 gv.client_socket_list.remove(socket)
