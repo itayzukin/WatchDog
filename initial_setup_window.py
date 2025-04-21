@@ -1,33 +1,28 @@
-from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtWidgets import (
-    QMainWindow, 
-    QWidget, 
-    QVBoxLayout, 
-    QHBoxLayout,
-    QLabel,
-    QPushButton
-)
+from PyQt6.QtWidgets import QWidget, QPushButton, QVBoxLayout
+from admin.admin_main_window import AdminMainWindow
+from user.user_main_window import UserMainWindow
+from base_window import BaseWindow
 
-class InitialSetupWindow(QMainWindow):
-    def __init__(self, window_name):
+class InitialSetupWindow(BaseWindow):
+    def __init__(self):
         super().__init__()
-        self.setWindowTitle(window_name)
-        self.setFixedSize(QSize(400, 150))
+        self.setWindowTitle("Initial Setup")
 
-        maint_layout = QVBoxLayout()
-        button_layout = QHBoxLayout()
+        self.admin_button = QPushButton("Setup as Admin")
+        self.user_button = QPushButton("Setup as User")
 
-        #maint_layout.addWidget() # add color
-        maint_layout.addWidget(QLabel('Welcome!'))
-        maint_layout.addWidget(QLabel('Are you setting this computer as an admin or a user?'))
+        self.admin_button.clicked.connect(self.open_admin)
+        self.user_button.clicked.connect(self.open_user)
 
-        button_layout.addWidget(QPushButton('Admin'))
-        button_layout.addWidget(QPushButton('User'))
+        self.content_layout.addWidget(self.admin_button)
+        self.content_layout.addWidget(self.user_button)
 
-        maint_layout.addLayout(button_layout)
+    def open_admin(self):
+        self.admin_window = AdminMainWindow()
+        self.admin_window.show()
+        self.close()
 
-        widget = QWidget()
-        widget.setLayout(maint_layout)
-
-        self.setCentralWidget(widget)
-        self.show()
+    def open_user(self):
+        self.user_window = UserMainWindow()
+        self.user_window.show()
+        self.close()

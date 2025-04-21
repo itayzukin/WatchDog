@@ -1,48 +1,25 @@
-from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtWidgets import (
-    QMainWindow, 
-    QWidget, 
-    QVBoxLayout, 
-    QHBoxLayout,
-    QLabel,
-    QPushButton,
-    QLineEdit,
-    QApplication
-)
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton
+from user.admin_panel_window import UserAdminPanelWindow
+from base_window import BaseWindow
 
-class LoginWindow(QWidget):
+class UserMainWindow(BaseWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Login")
-        self.init_ui()
+        self.setWindowTitle("User Monitor")
 
-    def init_ui(self):
-        # Label and password input
-        label = QLabel("Password:")
+        self.monitoring_label = QLabel("You are being monitored.")
         self.password_input = QLineEdit()
-        self.password_input.setEchoMode(QLineEdit.Password)
+        self.password_input.setPlaceholderText("Enter Password")
+        self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
-        # Login button
-        login_button = QPushButton("Login")
-        login_button.clicked.connect(self.handle_login)
+        self.login_button = QPushButton("Login")
+        self.login_button.clicked.connect(self.login)
 
-        # Horizontal layout for input and button
-        h_layout = QHBoxLayout()
-        h_layout.addWidget(label)
-        h_layout.addWidget(self.password_input)
-        h_layout.addWidget(login_button)
+        self.content_layout.addWidget(self.monitoring_label)
+        self.content_layout.addWidget(self.password_input)
+        self.content_layout.addWidget(self.login_button)
 
-        # Set the layout to the window
-        v_layout = QVBoxLayout()
-        v_layout.addLayout(h_layout)
-        self.setLayout(v_layout)
-
-    def handle_login(self):
-        password = self.password_input.text()
-        print("Password entered:", password)  # Placeholder for actual logic
-
-if __name__ == "__main__":
-    app = QApplication([])
-    window = LoginWindow()
-    window.show()
-    app.exec()
+    def login(self):
+        self.panel = UserAdminPanelWindow()
+        self.panel.show()
+        self.close()

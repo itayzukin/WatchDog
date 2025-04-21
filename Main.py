@@ -3,9 +3,9 @@ from initial_setup_window import InitialSetupWindow
 
 def main():
     app = QApplication([])
-    window = InitialSetupWindow('WatchDog')
+    window = InitialSetupWindow()
+    window.show()
     app.exec()
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
