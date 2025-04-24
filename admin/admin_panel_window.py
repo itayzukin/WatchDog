@@ -1,20 +1,20 @@
 import os
 from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtWidgets import (
-    QMainWindow, 
+from PyQt6.QtWidgets import ( 
     QWidget, 
     QVBoxLayout,
     QLabel,
     QApplication
 )
 from PyQt6.QtGui import QPixmap, QImage
-import stream_client.global_vars as gv
 from stream_client.tcp_client_producer_thread import TCPClientProducerThread
 from stream_client.image_handler_consumer_thread import ImageHandlerConsumerThread
+from base_window import BaseWindow
+import stream_client.global_vars as gv
 
 FPS = 60
 
-class AdminWindow(QMainWindow):
+class AdminWindow(BaseWindow):
     def __init__(self, window_name):
         super().__init__()
         self.setWindowTitle(window_name)

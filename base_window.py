@@ -5,7 +5,7 @@ from PyQt6.QtCore import Qt
 class BaseWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setMinimumSize(600, 400)
+        self.setMinimumSize(600, 300)
 
         # Top header with logo
         self.header = QFrame()
