@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QWidget, QPushButton, QVBoxLayout
 from admin.admin_main_window import AdminMainWindow
-from user.user_main_window import UserMainWindow
+from user.user_setup_window import UserSetupWindow
 from base_window import BaseWindow
 
 class InitialSetupWindow(BaseWindow):
@@ -23,6 +23,6 @@ class InitialSetupWindow(BaseWindow):
         self.close()
 
     def open_user(self):
-        self.user_window = UserMainWindow()
-        self.user_window.show()
+        self.user_setup = UserSetupWindow()
+        self.user_setup.show()
         self.close()
