@@ -1,6 +1,6 @@
 import socket
 import threading
-import global_vars as gv
+import admin.stream_client.global_vars as gv
 
 SERVER_IP = '192.168.1.112'
 SERVER_PORT = 15500

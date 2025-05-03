@@ -1,11 +1,11 @@
 from PyQt6.QtWidgets import QApplication
-from initial_setup_window import InitialSetupWindow
+from main_app_window import MainAppWindow
 
-def main():
+def run_app():
     app = QApplication([])
-    window = InitialSetupWindow()
+    window = MainAppWindow()   
     window.show()
     app.exec()
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    run_app()

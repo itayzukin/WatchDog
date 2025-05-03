@@ -1,4 +1,3 @@
-import os
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtWidgets import ( 
     QWidget, 
@@ -7,17 +6,17 @@ from PyQt6.QtWidgets import (
     QApplication
 )
 from PyQt6.QtGui import QPixmap, QImage
-from stream_client.tcp_client_producer_thread import TCPClientProducerThread
-from stream_client.image_handler_consumer_thread import ImageHandlerConsumerThread
+from admin.stream_client.tcp_client_producer_thread import TCPClientProducerThread
+from admin.stream_client.image_handler_consumer_thread import ImageHandlerConsumerThread
 from base_window import BaseWindow
-import stream_client.global_vars as gv
+import admin.stream_client.global_vars as gv
 
 FPS = 60
 
-class AdminWindow(BaseWindow):
-    def __init__(self, window_name):
+class AdminPanelPage(BaseWindow):
+    def __init__(self):
         super().__init__()
-        self.setWindowTitle(window_name)
+        self.setWindowTitle("Skibidi")
         #self.setFixedSize(QSize(400, 150))
 
         main_layout = QVBoxLayout()

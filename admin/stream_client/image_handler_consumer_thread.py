@@ -1,5 +1,5 @@
 import threading
-import global_vars as gv
+import admin.stream_client.global_vars as gv
 
 SOF_FLAG = b'SOF'
 EOF_FLAG = b'EOF'
