@@ -1,10 +1,10 @@
 from PyQt6.QtWidgets import QApplication
 from main_app_window import MainAppWindow
-import os.path as op
+import os.path
 import configparser
 
 def run_app():
-    if not op.isfile('config.ini'):
+    if not os.path.isfile('config.ini'):
         create_config()
 
     app = QApplication([])

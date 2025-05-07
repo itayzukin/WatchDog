@@ -1,10 +1,13 @@
 from base_window import BaseWindow
 from PyQt6.QtWidgets import QLabel, QLineEdit, QPushButton
+import configparser
 
 class UserSetupPage(BaseWindow):
     def __init__(self, parent_window):
         super().__init__()
         self.parent_window = parent_window
+        self.config = configparser.ConfigParser()
+        self.config.read('config.ini')
 
         label = QLabel("Create a password:")
         self.password_input = QLineEdit()
@@ -13,8 +16,17 @@ class UserSetupPage(BaseWindow):
 
         btn_signup = QPushButton("Sign Up")
         btn_signup.setMinimumHeight(40)
-        btn_signup.clicked.connect(self.parent_window.go_to_user_main)
+        btn_signup.clicked.connect(self.check_password)
 
         self.content_layout.addWidget(label)
         self.content_layout.addWidget(self.password_input)
         self.content_layout.addWidget(btn_signup)
+
+    def check_password(self):
+        self.write_to_config(self.password_input.text())
+
+    def write_to_config(self, password):
+        self.config['Account'] = {'password': password}
+        self.config.set('Initialisation','setup', 'True')
+        with open('config.ini', 'w') as configfile:
+            self.config.write(configfile)

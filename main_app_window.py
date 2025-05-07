@@ -28,9 +28,9 @@ class MainAppWindow(QMainWindow):
 
         setup_status = self.setup_check()
         match setup_status:
-            case 'admin':   
+            case 'Admin':   
                 self.stack.setCurrentWidget(self.admin_default)
-            case 'user':
+            case 'User':
                 self.stack.setCurrentWidget(self.user_main)
             case _:
                 self.stack.setCurrentWidget(self.initial_setup)
@@ -43,7 +43,7 @@ class MainAppWindow(QMainWindow):
         account_type = config.get('Initialisation', 'account_type')
 
         if not is_setup or account_type == 'None':
-            return is_setup
+            return None
         
         return account_type
 

@@ -22,16 +22,18 @@ class InitialSetupPage(BaseWindow):
         self.content_layout.addWidget(btn_user)
 
     def setup_as_admin(self):
-        self.write_to_config('admin')
+        self.disable_setup()
+        self.set_account_type('Admin')
         self.parent_window.go_to_admin_default()
     
     def setup_as_user(self):
-        self.write_to_config('user')
+        self.set_account_type('User')
         self.parent_window.go_to_user_setup()
     
-    def write_to_config(self, value):
+    def disable_setup(self):
+        self.config.set('Initialisation','setup', 'True')
+
+    def set_account_type(self, value):
         self.config.set('Initialisation','account_type',value)
         with open('config.ini', 'w') as configfile:
             self.config.write(configfile)
-
-
