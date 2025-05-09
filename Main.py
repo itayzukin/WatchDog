@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QApplication
-from main_app_window import MainAppWindow
+from windows.main_app_window import MainAppWindow
 import os.path
 import configparser
 

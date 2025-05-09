@@ -1,4 +1,4 @@
-from base_window import BaseWindow
+from windows.base_window import BaseWindow
 from PyQt6.QtWidgets import QLabel, QPushButton, QHBoxLayout
 
 class AdminPanelPage(BaseWindow):

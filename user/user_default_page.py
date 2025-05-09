@@ -1,10 +1,14 @@
-from base_window import BaseWindow
+from windows.base_window import BaseWindow
 from PyQt6.QtWidgets import QLabel, QPushButton, QLineEdit
+import hashlib
+import configparser
 
 class UserDefaultPage(BaseWindow):
     def __init__(self, parent_window):
         super().__init__()
         self.parent_window = parent_window
+        self.config = configparser.ConfigParser()
+        self.config.read('config.ini')
 
         label = QLabel("You are being monitored.")
         label.setStyleSheet("font-size: 18px;")
@@ -14,8 +18,15 @@ class UserDefaultPage(BaseWindow):
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
         btn_login = QPushButton("Login to Admin Panel")
-        btn_login.clicked.connect(self.parent_window.go_to_admin_panel)
+        btn_login.clicked.connect(self.check_password)
 
         self.content_layout.addWidget(label)
         self.content_layout.addWidget(self.password_input)
         self.content_layout.addWidget(btn_login)
+
+    def check_password(self):
+        password = self.password_input.text()
+        encrypted = hashlib.md5(password.encode()).hexdigest()
+        
+        if encrypted == self.config.get('Account','password'):
+            self.parent_window.go_to_admin_panel()

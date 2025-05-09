@@ -14,7 +14,7 @@ class BaseWindow(QWidget):
         # Dark - #52995f
 
         self.logo_label = QLabel()
-        pixmap = QPixmap("logo.png")
+        pixmap = QPixmap("images\logo.png")
         self.logo_label.setPixmap(pixmap.scaledToHeight(40, Qt.TransformationMode.SmoothTransformation))
         self.logo_label.setContentsMargins(15, 0, 0, 0)
         self.logo_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)

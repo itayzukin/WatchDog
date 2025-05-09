@@ -1,4 +1,4 @@
-from base_window import BaseWindow
+from windows.base_window import BaseWindow
 from PyQt6.QtWidgets import QPushButton
 import configparser
 

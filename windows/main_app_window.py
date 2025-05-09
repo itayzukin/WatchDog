@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QMainWindow, QStackedWidget
-from initial_setup_page import InitialSetupPage
+from windows.initial_setup_page import InitialSetupPage
 from user.user_setup_page import UserSetupPage
 from user.user_default_page import UserDefaultPage
 from admin.admin_default_page import AdminDefaultPage
