@@ -1,5 +1,6 @@
 from windows.base_window import BaseWindow
 from PyQt6.QtWidgets import QPushButton
+import thread_handler as th
 import configparser
 
 class InitialSetupPage(BaseWindow):
@@ -23,8 +24,8 @@ class InitialSetupPage(BaseWindow):
 
     def setup_as_admin(self):
         self.disable_setup()
-        self.set_account_type('Admin')
-        self.parent_window.go_to_admin_default()
+        th.enable_user_threads()
+        self.set_account_type('Admin') 
     
     def setup_as_user(self):
         self.set_account_type('User')

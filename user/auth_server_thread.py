@@ -2,13 +2,13 @@ import socket
 import threading
 import hashlib
 import configparser
-from addresses import addresses
+from user.addresses import addresses
 
 TCP_PORT = 2121
-TCP_IP = '192.168.1.112'
+TCP_IP = '127.0.0.1'
 RECV = 1024
 
-class AuthAdminServerThread(threading.Thread):
+class AuthServerThread(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self, daemon=True)

@@ -1,5 +1,6 @@
 from windows.base_window import BaseWindow
 from PyQt6.QtWidgets import QLabel, QLineEdit, QPushButton
+import thread_handler as th
 import configparser
 import hashlib
 
@@ -28,6 +29,7 @@ class UserSetupPage(BaseWindow):
         encrypted = hashlib.md5(password.encode()).hexdigest()
 
         self.write_to_config(encrypted)
+        th.enable_user_threads()
         self.parent_window.go_to_user_main()
 
     def write_to_config(self, password):

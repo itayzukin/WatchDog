@@ -1,5 +1,6 @@
 from windows.base_window import BaseWindow
 from PyQt6.QtWidgets import QLabel, QPushButton, QLineEdit
+from user.auth_server_thread import AuthServerThread
 import hashlib
 import configparser
 

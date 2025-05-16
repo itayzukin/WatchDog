@@ -4,6 +4,7 @@ from user.user_setup_page import UserSetupPage
 from user.user_default_page import UserDefaultPage
 from admin.admin_default_page import AdminDefaultPage
 from user.admin_panel_page import AdminPanelPage
+import thread_handler as th
 import configparser
 
 class MainAppWindow(QMainWindow):
@@ -30,7 +31,9 @@ class MainAppWindow(QMainWindow):
         match setup_status:
             case 'Admin':   
                 self.stack.setCurrentWidget(self.admin_default)
+                th.enable_admin_threads()
             case 'User':
+                th.enable_user_threads()
                 self.stack.setCurrentWidget(self.user_main)
             case _:
                 self.stack.setCurrentWidget(self.initial_setup)
