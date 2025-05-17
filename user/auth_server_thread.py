@@ -30,26 +30,23 @@ class AuthServerThread(threading.Thread):
                 case "CONNECTION":
                     if self.check_password(args[1]):
                         addresses[address] = True
-                        client_socket.send('ACCEPTED')
+                        client_socket.send('ACCEPTED'.encode())
                         client_socket.close()
-                        break
                     else:
                         if address in addresses:
                             if addresses[address] == False:
-                                client_socket.send('BLOCKED')
+                                client_socket.send('BLOCKED'.encode())
                                 client_socket.close()
-                                break
                             elif addresses[address] == 3:
                                 addresses[address] = False
                             else:
                                 addresses[address] = addresses[address] + 1
                         else:
                             addresses[address] = 1
-                        client_socket.send('INCORRECT')
+                        client_socket.send('INCORRECT'.encode())
                         client_socket.close()
-                    break
                 case _:
-                    break
+                    pass
 
     def check_password(self, password):
         encrypted_recv = hashlib.md5(password.encode()).hexdigest()

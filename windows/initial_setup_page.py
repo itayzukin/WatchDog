@@ -24,8 +24,9 @@ class InitialSetupPage(BaseWindow):
 
     def setup_as_admin(self):
         self.disable_setup()
-        th.enable_user_threads()
         self.set_account_type('Admin') 
+        th.enable_admin_threads()
+        self.parent_window.go_to_admin_default()
     
     def setup_as_user(self):
         self.set_account_type('User')

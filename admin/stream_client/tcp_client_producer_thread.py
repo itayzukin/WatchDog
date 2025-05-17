@@ -11,9 +11,9 @@ class TCPClientProducerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client_socket.connect((SERVER_IP, SERVER_PORT))
 
     def run(self):
+        self.client_socket.connect((SERVER_IP, SERVER_PORT))
         print(f"Connected to TCP server on port: {SERVER_PORT}")
 
         while True:
