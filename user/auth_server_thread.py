@@ -5,7 +5,7 @@ import configparser
 from user.addresses import addresses
 
 TCP_PORT = 2121
-TCP_IP = '127.0.0.1'
+TCP_IP = '192.168.1.112'
 RECV = 1024
 
 class AuthServerThread(threading.Thread):
@@ -32,6 +32,7 @@ class AuthServerThread(threading.Thread):
                         addresses[address] = True
                         client_socket.send('ACCEPTED'.encode())
                         client_socket.close()
+                        print(address, "ACCEPTED")
                     else:
                         if address in addresses:
                             if addresses[address] == False:

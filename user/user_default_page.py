@@ -30,4 +30,4 @@ class UserDefaultPage(BaseWindow):
         encrypted = hashlib.md5(password.encode()).hexdigest()
         
         if encrypted == self.config.get('Account','password'):
-            self.parent_window.go_to_admin_panel()
+            self.parent_window.go_to_user_admin_panel()
