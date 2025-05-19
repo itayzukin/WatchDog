@@ -16,6 +16,7 @@ FPS = 60
 class AdminPanelPage(BaseWindow):
     def __init__(self, parent_window):
         super().__init__()
+        self.parent_window = parent_window
 
         main_layout = QVBoxLayout()
         main_layout.addWidget(QLabel('Live Screen Share'))
@@ -28,18 +29,12 @@ class AdminPanelPage(BaseWindow):
 
         widget = QWidget()
         widget.setLayout(main_layout)
-        self.setCentralWidget(widget)
+        self.content_layout.addWidget(widget)
         
         # Set up a timer to refresh the QLabel every 100ms (check this code later)
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_image)
         self.timer.start(1000 // FPS)
-
-        self.thread1 = TCPClientProducerThread()
-        self.thread2 = ImageHandlerConsumerThread()
-
-        self.thread1.start()
-        self.thread2.start()
 
         self.show()
 
@@ -55,9 +50,3 @@ class AdminPanelPage(BaseWindow):
                     Qt.TransformationMode.SmoothTransformation
                 )
                 self.image_widget.setPixmap(scaled_pixmap)
-
-
-if __name__ == '__main__':
-    app = QApplication([])
-    window = AdminWindow('WatchDog')
-    app.exec()
