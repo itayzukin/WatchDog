@@ -9,7 +9,7 @@ BUFFER_SIZE = 8192
 class TCPClientProducerThread(threading.Thread):
 
     def __init__(self):
-        threading.Thread.__init__(self)
+        threading.Thread.__init__(self, daemon=True)
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def run(self):

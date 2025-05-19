@@ -6,7 +6,7 @@ EOF_FLAG = b'EOF'
 
 class ImageHandlerConsumerThread(threading.Thread):
     def __init__ (self):
-        threading.Thread.__init__ (self)
+        threading.Thread.__init__ (self, daemon=True)
 
     def run (self):
         image = b''
