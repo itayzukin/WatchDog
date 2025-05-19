@@ -1,6 +1,6 @@
 import socket
 import threading
-import global_vars as gv
+import user.stream_server.global_vars as gv
 
 SOF_FLAG = b'SOF'
 EOF_FLAG = b'EOF'

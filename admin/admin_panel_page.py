@@ -6,8 +6,6 @@ from PyQt6.QtWidgets import (
     QApplication
 )
 from PyQt6.QtGui import QPixmap, QImage
-from admin.stream_client.tcp_client_producer_thread import TCPClientProducerThread
-from admin.stream_client.image_handler_consumer_thread import ImageHandlerConsumerThread
 from windows.base_window import BaseWindow
 import admin.stream_client.global_vars as gv
 

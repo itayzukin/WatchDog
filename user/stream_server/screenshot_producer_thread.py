@@ -1,6 +1,6 @@
 from mss import mss
 from PIL import Image
-import global_vars as gv
+import user.stream_server.global_vars as gv
 import threading
 import io
 
