@@ -34,7 +34,6 @@ class MainAppWindow(QMainWindow):
         match setup_status:
             case 'Admin':   
                 self.stack.setCurrentWidget(self.admin_default)
-                th.enable_admin_threads()
             case 'User':
                 th.enable_user_threads()
                 self.stack.setCurrentWidget(self.user_main)
