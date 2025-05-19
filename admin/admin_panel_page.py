@@ -14,10 +14,8 @@ import admin.stream_client.global_vars as gv
 FPS = 60
 
 class AdminPanelPage(BaseWindow):
-    def __init__(self):
+    def __init__(self, parent_window):
         super().__init__()
-        self.setWindowTitle("Skibidi")
-        #self.setFixedSize(QSize(400, 150))
 
         main_layout = QVBoxLayout()
         main_layout.addWidget(QLabel('Live Screen Share'))

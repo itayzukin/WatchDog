@@ -3,7 +3,8 @@ from windows.initial_setup_page import InitialSetupPage
 from user.user_setup_page import UserSetupPage
 from user.user_default_page import UserDefaultPage
 from admin.admin_default_page import AdminDefaultPage
-from user.admin_panel_page import AdminPanelPage
+from user.admin_panel_page import AdminPanelPage as UserAdminPanelPage
+from admin.admin_panel_page import AdminPanelPage
 import thread_handler as th
 import configparser
 
@@ -19,12 +20,14 @@ class MainAppWindow(QMainWindow):
         self.user_setup = UserSetupPage(self)
         self.admin_default = AdminDefaultPage(self)
         self.user_main = UserDefaultPage(self)
+        self.user_admin_panel =UserAdminPanelPage(self)
         self.admin_panel = AdminPanelPage(self)
 
         self.stack.addWidget(self.initial_setup)
         self.stack.addWidget(self.user_setup)
         self.stack.addWidget(self.user_main)
         self.stack.addWidget(self.admin_default)
+        self.stack.addWidget(self.user_admin_panel)
         self.stack.addWidget(self.admin_panel)
 
         setup_status = self.setup_check()
@@ -58,6 +61,9 @@ class MainAppWindow(QMainWindow):
 
     def go_to_admin_default(self):
         self.stack.setCurrentWidget(self.admin_default)
+
+    def go_to_user_admin_panel(self):
+        self.stack.setCurrentWidget(self.user_admin_panel)
 
     def go_to_admin_panel(self):
         self.stack.setCurrentWidget(self.admin_panel)
