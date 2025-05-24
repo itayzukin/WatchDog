@@ -8,8 +8,6 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QPixmap, QImage
 from windows.base_window import BaseWindow
-from admin.stream_client.input_listener_thread import InputListenerThread
-from admin.stream_client.audio_udp_stream_receiver import AudioUDPStreamTransmit
 import admin.stream_client.global_vars as gv
 
 FPS = 60
@@ -31,14 +29,6 @@ class AdminPanelPage(BaseWindow):
         self.audio_strean_toggle = False
 
         main_layout = QVBoxLayout()
-        button_layout = QHBoxLayout()
-        self.audio_button = QPushButton('Toggle Audio')
-        self.audio_button.clicked.connect(self.toggle_audio)
-        self.takeover_button = QPushButton('Takeover')
-        self.takeover_button.clicked.connect(self.takeover)
-        button_layout.addWidget(self.audio_button)
-        button_layout.addWidget(self.takeover_button)
-        main_layout.addLayout(button_layout)
 
         # QLabel for displaying the live feed
         self.image_widget = QLabel()
@@ -75,22 +65,3 @@ class AdminPanelPage(BaseWindow):
                     Qt.TransformationMode.SmoothTransformation
                 )
                 self.image_widget.setPixmap(scaled_pixmap)
-    
-    def takeover(self):
-        if not self.input_listener_toggle:
-            self.input_listener = InputListenerThread()
-            self.input_listener.start()
-            self.input_listener_toggle = True
-        else:
-            self.input_listener.join()
-            self.input_listener_toggle = False
-
-
-    def toggle_audio(self):
-        if not self.audio_strean_toggle:
-            self.audio_stream = AudioUDPStreamTransmit()
-            self.audio_stream.start()
-            self.audio_strean_toggle = True
-        else:
-            self.audio_stream.join()
-            self.audio_strean_toggle = False

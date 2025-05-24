@@ -1,7 +1,6 @@
 from user.auth_server_thread import AuthServerThread
 from user.stream_server.screenshot_producer_thread import ScreenshotProducerThread
 from user.stream_server.tcp_server_consumer_thread import TCPServerConsumerThread
-from user.stream_server.input_server_thread import InputServerThread
 from admin.stream_client.tcp_client_producer_thread import TCPClientProducerThread
 from admin.stream_client.image_handler_consumer_thread import ImageHandlerConsumerThread
 
@@ -10,12 +9,10 @@ def enable_user_threads():
     auth_thread = AuthServerThread()
     tcp_server_thread = TCPServerConsumerThread()
     screenshot_thread = ScreenshotProducerThread()
-    input_server_thread = InputServerThread()
     
     auth_thread.start()
     tcp_server_thread.start()
     screenshot_thread.start()
-    input_server_thread.start()
 
 def enable_admin_threads():
     """Start all necessary threads for admin mode."""
