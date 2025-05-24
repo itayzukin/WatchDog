@@ -27,26 +27,27 @@ class TCPServerConsumerThread(threading.Thread):
         when available.
         """
         print(f"Starting server on port: {TCP_PORT}")
-        while True:
-            client_socket, _address = self.server_socket.accept()
-            print("Client connected")
-            # if _address in addresses:
-            gv.client_socket_list.append(client_socket)
+        accept_thread = threading.Thread(target = accept_clients, args=self.server_socket)
 
-            while gv.client_socket_list:
-                with gv.condition:
-                    while not gv.buffered_image:
-                        gv.condition.wait()
-                    image_data = gv.buffered_image
-                self.send_clients(SOF_FLAG + image_data + EOF_FLAG)
-            client_socket.close()
+        while gv.client_socket_list:
+            with gv.condition:
+                while not gv.buffered_image:
+                    gv.condition.wait()
+                image_data = gv.buffered_image
+            self.send_clients(SOF_FLAG + image_data + EOF_FLAG)
 
     def send_clients(self, data):
         """
         Send data to all connected clients, removing any clients that fail.
         """
-        for sock in gv.client_socket_list[:]:
+        for sock in gv.client_socket_list:
             try:
                 sock.sendall(data)
             except Exception:
                 gv.client_socket_list.remove(sock)
+
+def accept_clients(server_socket):
+        while True:
+            client_socket, _address = server_socket.accept()
+            print("Client connected")
+            gv.client_socket_list.append(client_socket)
