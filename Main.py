@@ -17,6 +17,7 @@ def create_config():
     """Create default config file with initial setup flags."""
     config = configparser.ConfigParser()
     config['Initialisation'] = {
+        'setup': 'False',
         'account_type': 'None'
     }
     with open('config.ini', 'w') as configfile:

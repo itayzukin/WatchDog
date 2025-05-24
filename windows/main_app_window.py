@@ -39,18 +39,27 @@ class MainAppWindow(QMainWindow):
             self.stack.addWidget(widget)
 
         # Check setup and show appropriate page
-        config = configparser.ConfigParser()
-        config.read('config.ini')
-        account_type = config.get('Initialisation', 'account_type')
-
-        match account_type:
-            case 'Admin':
+        setup_status = self.setup_check()
+        match setup_status:
+            case 'Admin':   
                 self.stack.setCurrentWidget(self.admin_default)
             case 'User':
                 th.enable_user_threads()
                 self.stack.setCurrentWidget(self.user_main)
             case _:
                 self.stack.setCurrentWidget(self.initial_setup)
+
+    def setup_check(self):
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+
+        is_setup = config.getboolean('Initialisation', 'setup')
+        account_type = config.get('Initialisation', 'account_type')
+
+        if not is_setup or account_type == 'None':
+            return None
+        
+        return account_type
 
     # Navigation helper methods
     def go_to_user_setup(self):

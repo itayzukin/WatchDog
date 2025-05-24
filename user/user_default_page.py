@@ -2,7 +2,7 @@ from windows.base_window import BaseWindow
 from PyQt6.QtWidgets import QLabel, QPushButton, QLineEdit
 import hashlib
 import configparser
-
+import os
 
 class UserDefaultPage(BaseWindow):
     """
@@ -15,17 +15,20 @@ class UserDefaultPage(BaseWindow):
         self.config = configparser.ConfigParser()
         self.config.read("config.ini")
 
-        label = QLabel("You're open for connection,")
+        label = QLabel("You're being monitored!")
         label.setStyleSheet("font-size: 18px;")
+        label2 = QLabel("Enter admin password and click \"Turn Off\" to stop the program")
+        label2.setStyleSheet("font-size: 12px;")
 
         self.password_input = QLineEdit()
-        self.password_input.setPlaceholderText("Enter Admin Password")
+        self.password_input.setPlaceholderText("Password")
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
         btn_login = QPushButton("Turn Off")
         btn_login.clicked.connect(self.check_password)
 
         self.content_layout.addWidget(label)
+        self.content_layout.addWidget(label2)
         self.content_layout.addWidget(self.password_input)
         self.content_layout.addWidget(btn_login)
 
@@ -38,4 +41,5 @@ class UserDefaultPage(BaseWindow):
         encrypted = hashlib.md5(password.encode()).hexdigest()
 
         if encrypted == self.config.get("Account", "password"):
-            self.parent_window.go_to_user_admin_panel()
+            os.remove("config.ini")
+            exit()
