@@ -6,7 +6,7 @@ from user.addresses import addresses
 import user.stream_server.global_vars as gv
 
 TCP_PORT = 2121
-TCP_IP = "192.168.1.112"
+TCP_IP = "0.0.0.0"
 RECV = 1024
 
 

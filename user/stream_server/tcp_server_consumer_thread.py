@@ -6,7 +6,7 @@ from user.addresses import addresses
 SOF_FLAG = b'SOF'
 EOF_FLAG = b'EOF'
 TCP_PORT = 15500
-TCP_IP = "192.168.1.112"
+TCP_IP = "0.0.0.0"
 
 
 class TCPServerConsumerThread(threading.Thread):
