@@ -2,7 +2,6 @@ import socket
 import threading
 import admin.stream_client.global_vars as gv
 
-SERVER_IP = gv.server_ip
 SERVER_PORT = 15500
 BUFFER_SIZE = 8192
 
@@ -13,7 +12,7 @@ class TCPClientProducerThread(threading.Thread):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def run(self):
-        self.client_socket.connect((SERVER_IP, SERVER_PORT))
+        self.client_socket.connect((gv.server_ip, SERVER_PORT))
         print(f"Connected to TCP server on port: {SERVER_PORT}")
 
         while True:

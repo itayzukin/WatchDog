@@ -33,9 +33,9 @@ class AdminDefaultPage(BaseWindow):
 
         match answer:
             case "ACCEPTED":
-                th.enable_admin_threads()
                 gv.server_ip = self.ip_input.text()
-                gv.server_port = self.port_input.text()
+                gv.server_port = int(self.port_input.text())
+                th.enable_admin_threads()
                 self.parent_window.go_to_admin_panel()
             case "INCORRECT":
                 self.error_label.setText("The password you've entered is incorrect")
