@@ -23,10 +23,10 @@ class ImageHandlerConsumerThread(threading.Thread):
 
         while True:
             with gv.condition:
-                if len(gv.queue) == 0:
+                if gv.queue.empty():
                     gv.condition.wait()
 
-                data = gv.queue.pop(0)
+                data = gv.queue.get()
                 splitted = data.split(SOF_FLAG)
 
                 if SOF_FLAG in data:

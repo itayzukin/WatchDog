@@ -28,7 +28,7 @@ class TCPClientProducerThread(threading.Thread):
             while True:
                 data = self.client_socket.recv(BUFFER_SIZE)
                 with gv.condition:
-                    gv.queue.insert(-1,data)
+                    gv.queue.put(data)
                     gv.condition.notify()
         except:
             pass
