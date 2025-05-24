@@ -1,15 +1,19 @@
 from windows.base_window import BaseWindow
 from PyQt6.QtWidgets import QLabel, QPushButton, QLineEdit
-from user.auth_server_thread import AuthServerThread
 import hashlib
 import configparser
 
+
 class UserDefaultPage(BaseWindow):
+    """
+    User page allowing connection with password verification.
+    """
+
     def __init__(self, parent_window):
         super().__init__()
         self.parent_window = parent_window
         self.config = configparser.ConfigParser()
-        self.config.read('config.ini')
+        self.config.read("config.ini")
 
         label = QLabel("You're open for connection,")
         label.setStyleSheet("font-size: 18px;")
@@ -26,8 +30,12 @@ class UserDefaultPage(BaseWindow):
         self.content_layout.addWidget(btn_login)
 
     def check_password(self):
+        """
+        Check the entered password against the stored hash and
+        navigate to the admin panel if it matches.
+        """
         password = self.password_input.text()
         encrypted = hashlib.md5(password.encode()).hexdigest()
-        
-        if encrypted == self.config.get('Account','password'):
+
+        if encrypted == self.config.get("Account", "password"):
             self.parent_window.go_to_user_admin_panel()

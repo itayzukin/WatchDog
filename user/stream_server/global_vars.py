@@ -1,18 +1,24 @@
 import threading
 
+"""
+Global variables and synchronization primitives used for
+image streaming and input handling between producer and consumer threads.
+"""
+
 # Contains prepared image to send to client
 buffered_image = None
 
-# Stream Images Producer & Consumer condition
+# Condition for stream images producer & consumer synchronization
 condition = threading.Condition()
 
-# Condition for producer & consumer - inputs
+# Condition for producer & consumer synchronization - inputs
 input_condition = threading.Condition()
 
-# all the sockets of clients receiving images
+# List of client sockets receiving images
 client_socket_list = []
 
-# queue for inputs
+# Queue for inputs
 input_queue = []
 
-admin_ip = ''
+# Admin IP address (to be set)
+admin_ip = ""

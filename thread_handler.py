@@ -6,19 +6,26 @@ from admin.stream_client.tcp_client_producer_thread import TCPClientProducerThre
 from admin.stream_client.image_handler_consumer_thread import ImageHandlerConsumerThread
 
 def enable_user_threads():
-    auth_server = AuthServerThread()
-    thread1 = TCPServerConsumerThread()
-    thread2 = ScreenshotProducerThread()
-    thread3 = InputRevieverServerProducerThread()
+    """Start all necessary threads for user mode."""
+    auth_thread = AuthServerThread()
+    tcp_server_thread = TCPServerConsumerThread()
+    screenshot_thread = ScreenshotProducerThread()
+    input_receiver_thread = InputRevieverServerProducerThread()
     
-    auth_server.start()
-    thread1.start()
-    thread2.start()
-    thread3.start()
+    auth_thread.start()
+    tcp_server_thread.start()
+    screenshot_thread.start()
+    input_receiver_thread.start()
+
+    # Optionally return threads if you want to manage them later
+    return auth_thread, tcp_server_thread, screenshot_thread, input_receiver_thread
 
 def enable_admin_threads():
-    thread1 = TCPClientProducerThread()
-    thread2 = ImageHandlerConsumerThread()
+    """Start all necessary threads for admin mode."""
+    tcp_client_thread = TCPClientProducerThread()
+    image_handler_thread = ImageHandlerConsumerThread()
 
-    thread1.start()
-    thread2.start()
+    tcp_client_thread.start()
+    image_handler_thread.start()
+
+    return tcp_client_thread, image_handler_thread

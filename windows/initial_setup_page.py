@@ -3,7 +3,13 @@ from PyQt6.QtWidgets import QPushButton
 import thread_handler as th
 import configparser
 
+
 class InitialSetupPage(BaseWindow):
+    """
+    Initial setup page to choose account type: Admin or User,
+    and start respective threads accordingly.
+    """
+
     def __init__(self, parent_window):
         super().__init__()
         self.parent_window = parent_window
@@ -23,19 +29,25 @@ class InitialSetupPage(BaseWindow):
         self.content_layout.addWidget(btn_user)
 
     def setup_as_admin(self):
+        """Set account type to Admin, enable admin threads, and navigate to admin default page."""
         self.disable_setup()
-        self.set_account_type('Admin') 
+        self.set_account_type('Admin')
         th.enable_admin_threads()
         self.parent_window.go_to_admin_default()
-    
+
     def setup_as_user(self):
+        """Set account type to User and navigate to user setup page."""
         self.set_account_type('User')
         self.parent_window.go_to_user_setup()
-    
+
     def disable_setup(self):
-        self.config.set('Initialisation','setup', 'True')
+        """Mark setup as completed in config."""
+        self.config.set('Initialisation', 'setup', 'True')
+        with open('config.ini', 'w') as configfile:
+            self.config.write(configfile)
 
     def set_account_type(self, value):
-        self.config.set('Initialisation','account_type',value)
+        """Set the account type in the config file."""
+        self.config.set('Initialisation', 'account_type', value)
         with open('config.ini', 'w') as configfile:
             self.config.write(configfile)

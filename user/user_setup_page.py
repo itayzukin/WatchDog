@@ -4,7 +4,12 @@ import thread_handler as th
 import configparser
 import hashlib
 
+
 class UserSetupPage(BaseWindow):
+    """
+    Page for setting up a new user password.
+    """
+
     def __init__(self, parent_window):
         super().__init__()
         self.parent_window = parent_window
@@ -25,6 +30,10 @@ class UserSetupPage(BaseWindow):
         self.content_layout.addWidget(btn_signup)
 
     def check_password(self):
+        """
+        Encrypt the password entered by the user, write it to the config,
+        enable user threads, and navigate to the user main page.
+        """
         password = self.password_input.text()
         encrypted = hashlib.md5(password.encode()).hexdigest()
 
@@ -33,9 +42,12 @@ class UserSetupPage(BaseWindow):
         self.parent_window.go_to_user_main()
 
     def write_to_config(self, password):
+        """
+        Write the encrypted password and initialization flags to the config file.
+        """
         self.config['Account'] = {'password': password}
-        self.config.set('Initialisation','setup', 'True')
-        self.config.set('Initialisation','account_type', 'User')
+        self.config.set('Initialisation', 'setup', 'True')
+        self.config.set('Initialisation', 'account_type', 'User')
 
         with open('config.ini', 'w') as configfile:
             self.config.write(configfile)

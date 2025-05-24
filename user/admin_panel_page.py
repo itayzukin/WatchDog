@@ -1,7 +1,12 @@
 from windows.base_window import BaseWindow
 from PyQt6.QtWidgets import QLabel, QPushButton, QHBoxLayout
 
+
 class AdminPanelPage(BaseWindow):
+    """
+    Admin panel page containing toggle settings and a delete button.
+    """
+
     def __init__(self, parent_window):
         super().__init__()
 

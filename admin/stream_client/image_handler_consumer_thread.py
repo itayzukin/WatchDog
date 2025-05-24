@@ -4,18 +4,28 @@ import admin.stream_client.global_vars as gv
 SOF_FLAG = b'SOF'
 EOF_FLAG = b'EOF'
 
-class ImageHandlerConsumerThread(threading.Thread):
-    def __init__ (self):
-        threading.Thread.__init__ (self, daemon=True)
 
-    def run (self):
+class ImageHandlerConsumerThread(threading.Thread):
+    """
+    Consumer thread that assembles image data from chunks in a shared queue.
+    It waits for SOF/EOF byte flags to reconstruct a complete image.
+    """
+
+    def __init__(self):
+        super().__init__(daemon=True)
+
+    def run(self):
+        """
+        Continuously monitors the shared queue for new data chunks, processes
+        and reconstructs complete images, and updates the global image buffer.
+        """
         image = b''
 
         while True:
             with gv.condition:
                 if gv.queue.empty():
                     gv.condition.wait()
-                
+
                 data = gv.queue.get()
                 splitted = data.split(SOF_FLAG)
 

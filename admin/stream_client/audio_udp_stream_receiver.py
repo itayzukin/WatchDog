@@ -11,28 +11,43 @@ RATE = 44100
 SERVER_IP = gv.server_ip
 SERVER_PORT = 16600
 
+
 class AudioUDPStreamTransmit(threading.Thread):
+    """
+    Threaded class to receive audio data via UDP and play it through the microphone input.
+    """
 
     def __init__(self):
-        threading.Thread.__init__(self, daemon=True)
+        super().__init__(daemon=True)
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server_address = (SERVER_IP, SERVER_PORT)
         self.server_socket.bind(self.server_address)
         self.p = pyaudio.PyAudio()
-        self.stream = self.p.open(format=FORMAT, channels=CHANNELS, 
-                                  rate=RATE, input=True, frames_per_buffer=CHUNK)
+        self.stream = self.p.open(
+            format=FORMAT,
+            channels=CHANNELS,
+            rate=RATE,
+            input=True,
+            frames_per_buffer=CHUNK
+        )
 
     def run(self):
+        """
+        Continuously receives and plays audio data from the UDP socket.
+        """
         print("Receiving audio...")
 
         try:
             while True:
-                data, _addr = self.server_socket.recvfrom(CHUNK * 2)
+                data, _ = self.server_socket.recvfrom(CHUNK * 2)
                 self.stream.write(data)
-        except:
-            print("Reception stopped.")
+        except Exception as e:
+            print(f"Reception stopped. Reason: {e}")
 
     def join(self):
+        """
+        Cleans up audio stream and socket resources on thread termination.
+        """
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()

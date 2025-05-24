@@ -1,15 +1,15 @@
 import threading
 import queue
 
-# Contains received image
+# Contains the most recently received image
 buffered_image = None
 
-# Queue for producer & consumer
-queue = queue.Queue()
+# Queue for producer-consumer communication
+frame_queue = queue.Queue()
 
-# Consumer & Producer condition
+# Condition variable for synchronizing producer and consumer
 condition = threading.Condition()
 
-# server credentials
+# Server credentials (to be set externally)
 server_ip = None
 server_port = None
