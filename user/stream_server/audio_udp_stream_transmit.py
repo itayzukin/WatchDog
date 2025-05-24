@@ -7,12 +7,15 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
 
+SERVER_IP = '192.168.1.112'
+SERVER_PORT = 16600
+
 class AudioUDPStreamTransmit(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self, daemon=True)
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.server_address = ('192.168.1.112', 14400)
+        self.server_address = None
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(format=FORMAT, channels=CHANNELS, 
                                   rate=RATE, input=True, frames_per_buffer=CHUNK)

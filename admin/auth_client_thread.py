@@ -24,7 +24,6 @@ class AuthClientThread(threading.Thread):
             self._return = self.client_socket.recv(BUFFER_SIZE).decode()
         except TypeError as r:
             self._return = "INPUT_ERR"
-            print(r)
 
     def join(self):
         threading.Thread.join(self)

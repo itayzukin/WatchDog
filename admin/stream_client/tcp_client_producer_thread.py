@@ -2,7 +2,7 @@ import socket
 import threading
 import admin.stream_client.global_vars as gv
 
-SERVER_IP = '192.168.1.112'
+SERVER_IP = gv.server_ip
 SERVER_PORT = 15500
 BUFFER_SIZE = 8192
 

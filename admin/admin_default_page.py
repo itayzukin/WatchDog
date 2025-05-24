@@ -2,6 +2,7 @@ from windows.base_window import BaseWindow
 from PyQt6.QtWidgets import QLabel, QLineEdit, QPushButton
 from admin.auth_client_thread import AuthClientThread
 import thread_handler as th
+import admin.stream_client.global_vars as gv
 
 class AdminDefaultPage(BaseWindow):
     def __init__(self, parent_window):
@@ -33,6 +34,8 @@ class AdminDefaultPage(BaseWindow):
         match answer:
             case "ACCEPTED":
                 th.enable_admin_threads()
+                gv.server_ip = self.ip_input.text()
+                gv.server_port = self.port_input.text()
                 self.parent_window.go_to_admin_panel()
             case "INCORRECT":
                 self.error_label.setText("The password you've entered is incorrect")

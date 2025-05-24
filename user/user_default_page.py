@@ -11,14 +11,14 @@ class UserDefaultPage(BaseWindow):
         self.config = configparser.ConfigParser()
         self.config.read('config.ini')
 
-        label = QLabel("You are being monitored.")
+        label = QLabel("You're open for connection,")
         label.setStyleSheet("font-size: 18px;")
 
         self.password_input = QLineEdit()
         self.password_input.setPlaceholderText("Enter Admin Password")
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
-        btn_login = QPushButton("Login to Admin Panel")
+        btn_login = QPushButton("Turn Off")
         btn_login.clicked.connect(self.check_password)
 
         self.content_layout.addWidget(label)

@@ -3,7 +3,8 @@ from PyQt6.QtWidgets import (
     QWidget, 
     QVBoxLayout,
     QLabel,
-    QApplication
+    QHBoxLayout,
+    QPushButton
 )
 from PyQt6.QtGui import QPixmap, QImage
 from windows.base_window import BaseWindow
@@ -17,7 +18,12 @@ class AdminPanelPage(BaseWindow):
         self.parent_window = parent_window
 
         main_layout = QVBoxLayout()
-        main_layout.addWidget(QLabel('Live Screen Share'))
+        button_layout = QHBoxLayout()
+        self.audio_button = QPushButton('Toggle Audio')
+        self.takeover_button = QPushButton('Takeover')
+        button_layout.addWidget(self.audio_button)
+        button_layout.addWidget(self.takeover_button)
+        main_layout.addLayout(button_layout)
 
         # QLabel for dislaying the live feed
         self.image_widget = QLabel()
@@ -48,3 +54,9 @@ class AdminPanelPage(BaseWindow):
                     Qt.TransformationMode.SmoothTransformation
                 )
                 self.image_widget.setPixmap(scaled_pixmap)
+    
+    def toggle_audio(self):
+        pass
+
+    def takeover(self):
+        pass

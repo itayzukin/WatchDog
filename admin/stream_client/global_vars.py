@@ -9,3 +9,7 @@ queue = queue.Queue()
 
 # Consumer & Producer condition
 condition = threading.Condition()
+
+# server credentials
+server_ip = None
+server_port = None

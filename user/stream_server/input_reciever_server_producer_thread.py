@@ -7,7 +7,7 @@ TCP_PORT = 14400
 TCP_IP = '192.168.1.112'
 BUFFER_SIZE = 1024
 
-class InputRevieverServerThread(threading.Thread):
+class InputRevieverServerProducerThread(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self, daemon=True)
@@ -25,3 +25,4 @@ class InputRevieverServerThread(threading.Thread):
                     gv.input_queue.append(data.decode())
                     with gv.condition:
                         gv.condition.notify()
+            client_socket.close()
