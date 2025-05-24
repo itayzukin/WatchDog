@@ -8,7 +8,6 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
 
-SERVER_IP = gv.server_ip
 SERVER_PORT = 16600
 
 
@@ -20,8 +19,14 @@ class AudioUDPStreamTransmit(threading.Thread):
     def __init__(self):
         super().__init__(daemon=True)
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.server_address = (SERVER_IP, SERVER_PORT)
-        self.server_socket.bind(self.server_address)
+        self.stream = None
+        self.p = None
+
+    def run(self):
+        """
+        Continuously receives and plays audio data from the UDP socket.
+        """
+        self.server_socket.bind(("0.0.0.0", SERVER_PORT))
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(
             format=FORMAT,
@@ -31,10 +36,6 @@ class AudioUDPStreamTransmit(threading.Thread):
             frames_per_buffer=CHUNK
         )
 
-    def run(self):
-        """
-        Continuously receives and plays audio data from the UDP socket.
-        """
         print("Receiving audio...")
 
         try:

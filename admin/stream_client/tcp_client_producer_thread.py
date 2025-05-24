@@ -24,8 +24,11 @@ class TCPClientProducerThread(threading.Thread):
         self.client_socket.connect((gv.server_ip, SERVER_PORT))
         print(f"Connected to TCP server on port: {SERVER_PORT}")
 
-        while True:
-            data = self.client_socket.recv(BUFFER_SIZE)
-            with gv.condition:
-                gv.queue.put(data)
-                gv.condition.notify()
+        try:
+            while True:
+                data = self.client_socket.recv(BUFFER_SIZE)
+                with gv.condition:
+                    gv.queue.put(data)
+                    gv.condition.notify()
+        except:
+            pass
