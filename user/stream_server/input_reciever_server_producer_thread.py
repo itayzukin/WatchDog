@@ -1,7 +1,7 @@
 import socket
 import threading
 import user.stream_server.global_vars as gv
-from addresses import addresses
+from user.addresses import addresses
 
 TCP_PORT = 14400
 TCP_IP = '192.168.1.112'
