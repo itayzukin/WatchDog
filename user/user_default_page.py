@@ -18,7 +18,7 @@ class UserDefaultPage(BaseWindow):
 
         label = QLabel("You're being monitored!")
         label.setStyleSheet("font-size: 18px;")
-        label1 = QLabel(f"IP ADDRESS: {self.get_physical_ethernet_ip()} / {self.get_ethernet_ip()}\nPORT: 2121")
+        label1 = QLabel(f"IP ADDRESS: {self.get_physical_ethernet_ip()}\nPORT: 2121")
         label1.setStyleSheet("font-size: 16px;")
         label2 = QLabel("Enter admin password and click \"Turn Off\" to stop the program")
         label2.setStyleSheet("font-size: 12px;")
@@ -62,14 +62,6 @@ class UserDefaultPage(BaseWindow):
         for iface_name, addrs in psutil.net_if_addrs().items():
             name_lower = iface_name.lower()
             if "ethernet" in name_lower and not name_lower.startswith("vethernet"):
-                for addr in addrs:
-                    if addr.family.name == "AF_INET":
-                        return addr.address
-        return None
-    
-    def get_ethernet_ip(self):
-        for iface_name, addrs in psutil.net_if_addrs().items():
-            if "ethernet" in iface_name.lower():
                 for addr in addrs:
                     if addr.family.name == "AF_INET":
                         return addr.address
