@@ -19,10 +19,10 @@ class InputRevieverServerProducerThread(threading.Thread):
         print(f"Starting server on port: {TCP_PORT}")
         while True:
             client_socket, _address = self.server_socket.accept()
-            if _address in addresses:
-                while True:
-                    data = client_socket.recv(BUFFER_SIZE)
-                    gv.input_queue.append(data.decode())
-                    with gv.condition:
-                        gv.condition.notify()
+            #if _address in addresses:
+            while True:
+                data = client_socket.recv(BUFFER_SIZE)
+                gv.input_queue.append(data.decode())
+                with gv.condition:
+                    gv.condition.notify()
             client_socket.close()

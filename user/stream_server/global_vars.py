@@ -14,3 +14,5 @@ client_socket_list = []
 
 # queue for inputs
 input_queue = []
+
+admin_ip = ''

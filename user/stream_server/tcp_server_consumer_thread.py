@@ -20,17 +20,18 @@ class TCPServerConsumerThread(threading.Thread):
         print(f"Starting server on port: {TCP_PORT}")
         while True:
             client_socket, _address = self.server_socket.accept()
-            if _address in addresses:
-                gv.client_socket_list.append(client_socket)
+            print("Client connected")
+            #if _address in addresses:
+            gv.client_socket_list.append(client_socket)
 
-                while len(gv.client_socket_list) != 0:
-                    with gv.condition:
-                        while not gv.buffered_image:
-                            gv.condition.wait()
-                        image_data = gv.buffered_image
-                    self.send_clients(SOF_FLAG + image_data + EOF_FLAG)
-                    print("Image sent to client")
+            while len(gv.client_socket_list) != 0:
+                with gv.condition:
+                    while not gv.buffered_image:
+                        gv.condition.wait()
+                    image_data = gv.buffered_image
+                self.send_clients(SOF_FLAG + image_data + EOF_FLAG)
             client_socket.close()
+
 
 
     def send_clients(self, data):

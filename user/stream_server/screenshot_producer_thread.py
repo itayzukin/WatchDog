@@ -11,7 +11,6 @@ class ScreenshotProducerThread(threading.Thread):
 
     def run(self):
         while True:
-            print('Shot taken')
             gv.buffered_image = self.save_image()
             with gv.condition:
                 gv.condition.notify()
