@@ -2,7 +2,6 @@ from PyQt6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QFrame
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import Qt
 
-
 class BaseWindow(QWidget):
     """
     Base window class with a fixed header containing a logo and a content area.

@@ -6,7 +6,7 @@ from admin.admin_default_page import AdminDefaultPage
 from admin.admin_panel_page import AdminPanelPage
 import thread_handler as th
 import configparser
-
+from PyQt6.QtGui import QCloseEvent
 
 class MainAppWindow(QMainWindow):
     """
@@ -73,3 +73,9 @@ class MainAppWindow(QMainWindow):
 
     def go_to_admin_panel(self):
         self.stack.setCurrentWidget(self.admin_panel)
+    
+    def closeEvent(self, event: QCloseEvent):
+        if isinstance(self.stack.currentWidget(), UserDefaultPage):
+            event.ignore()
+        else:
+            event.accept()

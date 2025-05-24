@@ -23,13 +23,13 @@ class UserSetupPage(BaseWindow):
 
         btn_signup = QPushButton("Sign Up")
         btn_signup.setMinimumHeight(40)
-        btn_signup.clicked.connect(self.check_password)
+        btn_signup.clicked.connect(self.write_password)
 
         self.content_layout.addWidget(label)
         self.content_layout.addWidget(self.password_input)
         self.content_layout.addWidget(btn_signup)
 
-    def check_password(self):
+    def write_password(self):
         """
         Encrypt the password entered by the user, write it to the config,
         enable user threads, and navigate to the user main page.
