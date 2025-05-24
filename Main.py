@@ -1,5 +1,4 @@
 import os
-import sys
 import configparser
 from PyQt6.QtWidgets import QApplication
 from windows.main_app_window import MainAppWindow
@@ -9,16 +8,15 @@ def run_app():
     if not os.path.isfile('config.ini'):
         create_config()
 
-    app = QApplication(sys.argv)
-    window = MainAppWindow()
+    app = QApplication([])
+    window = MainAppWindow()   
     window.show()
-    sys.exit(app.exec())
+    app.exec()
 
 def create_config():
     """Create default config file with initial setup flags."""
     config = configparser.ConfigParser()
     config['Initialisation'] = {
-        'setup': 'False',
         'account_type': 'None'
     }
     with open('config.ini', 'w') as configfile:

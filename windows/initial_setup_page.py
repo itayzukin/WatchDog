@@ -16,8 +16,8 @@ class InitialSetupPage(BaseWindow):
         self.config = configparser.ConfigParser()
         self.config.read('config.ini')
 
-        btn_admin = QPushButton("Setup as Admin")
-        btn_user = QPushButton("Setup as User")
+        btn_admin = QPushButton("Admin")
+        btn_user = QPushButton("User")
 
         for btn in (btn_admin, btn_user):
             btn.setMinimumHeight(40)
@@ -30,7 +30,6 @@ class InitialSetupPage(BaseWindow):
 
     def setup_as_admin(self):
         """Set account type to Admin, enable admin threads, and navigate to admin default page."""
-        self.disable_setup()
         self.set_account_type('Admin')
         th.enable_admin_threads()
         self.parent_window.go_to_admin_default()
@@ -39,12 +38,6 @@ class InitialSetupPage(BaseWindow):
         """Set account type to User and navigate to user setup page."""
         self.set_account_type('User')
         self.parent_window.go_to_user_setup()
-
-    def disable_setup(self):
-        """Mark setup as completed in config."""
-        self.config.set('Initialisation', 'setup', 'True')
-        with open('config.ini', 'w') as configfile:
-            self.config.write(configfile)
 
     def set_account_type(self, value):
         """Set the account type in the config file."""

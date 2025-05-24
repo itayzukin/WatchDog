@@ -3,7 +3,6 @@ from windows.initial_setup_page import InitialSetupPage
 from user.user_setup_page import UserSetupPage
 from user.user_default_page import UserDefaultPage
 from admin.admin_default_page import AdminDefaultPage
-from user.admin_panel_page import AdminPanelPage as UserAdminPanelPage
 from admin.admin_panel_page import AdminPanelPage
 import thread_handler as th
 import configparser
@@ -27,7 +26,6 @@ class MainAppWindow(QMainWindow):
         self.user_setup = UserSetupPage(self)
         self.admin_default = AdminDefaultPage(self)
         self.user_main = UserDefaultPage(self)
-        self.user_admin_panel = UserAdminPanelPage(self)
         self.admin_panel = AdminPanelPage(self)
 
         # Add pages to stack
@@ -36,14 +34,16 @@ class MainAppWindow(QMainWindow):
             self.user_setup,
             self.user_main,
             self.admin_default,
-            self.user_admin_panel,
             self.admin_panel,
         ):
             self.stack.addWidget(widget)
 
         # Check setup and show appropriate page
-        setup_status = self.setup_check()
-        match setup_status:
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        account_type = config.get('Initialisation', 'account_type')
+
+        match account_type:
             case 'Admin':
                 self.stack.setCurrentWidget(self.admin_default)
             case 'User':
@@ -51,26 +51,6 @@ class MainAppWindow(QMainWindow):
                 self.stack.setCurrentWidget(self.user_main)
             case _:
                 self.stack.setCurrentWidget(self.initial_setup)
-
-    def setup_check(self) -> str | None:
-        """
-        Reads the config.ini to determine if setup was completed
-        and returns the account type ('Admin' or 'User').
-        Returns None if not set up.
-        """
-        config = configparser.ConfigParser()
-        config.read('config.ini')
-
-        try:
-            is_setup = config.getboolean('Initialisation', 'setup')
-            account_type = config.get('Initialisation', 'account_type')
-        except (configparser.NoSectionError, configparser.NoOptionError):
-            return None
-
-        if not is_setup or account_type == 'None':
-            return None
-
-        return account_type
 
     # Navigation helper methods
     def go_to_user_setup(self):
@@ -81,9 +61,6 @@ class MainAppWindow(QMainWindow):
 
     def go_to_admin_default(self):
         self.stack.setCurrentWidget(self.admin_default)
-
-    def go_to_user_admin_panel(self):
-        self.stack.setCurrentWidget(self.user_admin_panel)
 
     def go_to_admin_panel(self):
         self.stack.setCurrentWidget(self.admin_panel)

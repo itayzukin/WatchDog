@@ -46,7 +46,6 @@ class UserSetupPage(BaseWindow):
         Write the encrypted password and initialization flags to the config file.
         """
         self.config['Account'] = {'password': password}
-        self.config.set('Initialisation', 'setup', 'True')
         self.config.set('Initialisation', 'account_type', 'User')
 
         with open('config.ini', 'w') as configfile:
