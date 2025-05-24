@@ -65,3 +65,5 @@ class AdminPanelPage(BaseWindow):
                     Qt.TransformationMode.SmoothTransformation
                 )
                 self.image_widget.setPixmap(scaled_pixmap)
+        elif gv.buffered_image == None:
+            self.image_widget.setText("Stream is Offline")

@@ -31,4 +31,4 @@ class TCPClientProducerThread(threading.Thread):
                     gv.queue.put(data)
                     gv.condition.notify()
         except:
-            pass
+            gv.buffered_image = None

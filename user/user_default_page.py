@@ -15,11 +15,10 @@ class UserDefaultPage(BaseWindow):
         super().__init__()
         self.parent_window = parent_window
         self.config = configparser.ConfigParser()
-        self.config.read("config.ini")
 
         label = QLabel("You're being monitored!")
         label.setStyleSheet("font-size: 18px;")
-        label1 = QLabel(f"IP ADDRESS: {self.get_physical_ethernet_ip()}\nPORT: 2121")
+        label1 = QLabel(f"IP ADDRESS: {self.get_physical_ethernet_ip()} / {self.get_ethernet_ip()}\nPORT: 2121")
         label1.setStyleSheet("font-size: 16px;")
         label2 = QLabel("Enter admin password and click \"Turn Off\" to stop the program")
         label2.setStyleSheet("font-size: 12px;")
@@ -45,6 +44,7 @@ class UserDefaultPage(BaseWindow):
         Check the entered password against the stored hash and
         navigate to the admin panel if it matches.
         """
+        self.config.read("config.ini")
         password = self.password_input.text()
         encrypted = hashlib.md5(password.encode()).hexdigest()
 
@@ -54,14 +54,22 @@ class UserDefaultPage(BaseWindow):
                 sys.exit()
             else:
                 self.label3.setText("Password is incorrect")
-        except Exception:
-            self.label3.setText("Password is incorrect")
+        except Exception as e:
+            self.label3.setText("An error has occured")
 
     def get_physical_ethernet_ip(self):
         """ Returns the ip of this computer"""
         for iface_name, addrs in psutil.net_if_addrs().items():
             name_lower = iface_name.lower()
             if "ethernet" in name_lower and not name_lower.startswith("vethernet"):
+                for addr in addrs:
+                    if addr.family.name == "AF_INET":
+                        return addr.address
+        return None
+    
+    def get_ethernet_ip(self):
+        for iface_name, addrs in psutil.net_if_addrs().items():
+            if "ethernet" in iface_name.lower():
                 for addr in addrs:
                     if addr.family.name == "AF_INET":
                         return addr.address

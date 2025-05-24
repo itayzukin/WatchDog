@@ -32,7 +32,6 @@ class InitialSetupPage(BaseWindow):
         """Set account type to Admin, enable admin threads, and navigate to admin default page."""
         self.config.set('Initialisation','setup', 'True')
         self.set_account_type('Admin')
-        th.enable_admin_threads()
         self.parent_window.go_to_admin_default()
 
     def setup_as_user(self):
