@@ -7,9 +7,9 @@ from PyQt6.QtWidgets import (
     QPushButton,
 )
 from PyQt6.QtGui import QPixmap, QImage
+from PyQt6.QtCore import pyqtSignal, QObject
 from windows.base_window import BaseWindow
 import admin.stream_client.global_vars as gv
-from admin.stream_client.signel_emitter import SignalEmitter
 
 FPS = 60
 
@@ -39,10 +39,11 @@ class AdminPanelPage(BaseWindow):
         btn_back.clicked.connect(self.return_admin_default)
 
         self.label = QLabel("Waiting for key input...")
-        self.label.setStyleSheet("font-size: 24px;")
+        self.label.setStyleSheet("font-size: 12px;")
         main_layout.addWidget(self.label)
 
         self.signal_emitter = SignalEmitter()
+        gv.signal_emitter = self.signal_emitter
         self.signal_emitter.new_text.connect(self.update_label)
 
         widget = QWidget()
@@ -81,3 +82,6 @@ class AdminPanelPage(BaseWindow):
 
     def update_label(self, text):
         self.label.setText(f"Last key: {text}")
+
+class SignalEmitter(QObject):
+    new_text = pyqtSignal(str)
