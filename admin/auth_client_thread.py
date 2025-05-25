@@ -1,7 +1,6 @@
 import socket
 import threading
 import hashlib
-import configparser
 
 BUFFER_SIZE = 1024
 
@@ -27,7 +26,8 @@ class AuthClientThread(threading.Thread):
         """
         try:
             self.client_socket.connect((self.server_ip, int(self.server_port)))
-            self.client_socket.send(f"CONNECTION {self.password}".encode())
+            encrypted = hashlib.md5(self.password.encode()).hexdigest()
+            self.client_socket.send(f"CONNECTION {encrypted}".encode())
             self._return = self.client_socket.recv(BUFFER_SIZE).decode()
         except TypeError:
             self._return = "INPUT_ERR"

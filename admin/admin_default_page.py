@@ -3,6 +3,7 @@ from windows.base_window import BaseWindow
 from admin.auth_client_thread import AuthClientThread
 import thread_handler as th
 import admin.stream_client.global_vars as gv
+import os
 
 
 class AdminDefaultPage(BaseWindow):
@@ -34,11 +35,15 @@ class AdminDefaultPage(BaseWindow):
         btn_connect = QPushButton("Connect")
         btn_connect.clicked.connect(self.try_connect)
 
+        btn_back = QPushButton("Return to setup")
+        btn_back.clicked.connect(self.return_setup)
+
         for widget in (
             self.ip_input,
             self.port_input,
             self.pass_input,
             btn_connect,
+            btn_back,
             self.error_label,
         ):
             self.content_layout.addWidget(widget)
@@ -73,3 +78,7 @@ class AdminDefaultPage(BaseWindow):
                 self.error_label.setText("Unknown error")
 
         del attempt_login
+        
+    def return_setup(self):
+        self.parent_window.go_to_setup()
+        os.remove('config.ini')

@@ -2,7 +2,6 @@ import socket
 import threading
 import hashlib
 import configparser
-from user.addresses import addresses
 import user.stream_server.global_vars as gv
 
 TCP_PORT = 2121
@@ -22,6 +21,7 @@ class AuthServerThread(threading.Thread):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((TCP_IP, TCP_PORT))
         self.server_socket.listen(1)
+        self.addresses = {}
 
     def run(self):
         """
@@ -37,22 +37,22 @@ class AuthServerThread(threading.Thread):
             match args[0]:
                 case "CONNECTION":
                     if self.check_password(args[1]):
-                        addresses[address] = True
+                        self.addresses[address] = True
                         client_socket.send("ACCEPTED".encode())
                         client_socket.close()
                         gv.admin_ip = address
                         print(address, "ACCEPTED")
                     else:
-                        if address in addresses:
-                            if addresses[address] is False:
+                        if address in self.addresses:
+                            if self.addresses[address] is False:
                                 client_socket.send("BLOCKED".encode())
                                 client_socket.close()
-                            elif addresses[address] == 3:
-                                addresses[address] = False
+                            elif self.addresses[address] == 3:
+                                self.addresses[address] = False
                             else:
-                                addresses[address] += 1
+                                self.addresses[address] += 1
                         else:
-                            addresses[address] = 1
+                            self.addresses[address] = 1
                         client_socket.send("INCORRECT".encode())
                         client_socket.close()
                 case _:
@@ -62,7 +62,6 @@ class AuthServerThread(threading.Thread):
         """
         Check the received password against the stored hash.
         """
-        encrypted_recv = hashlib.md5(password.encode()).hexdigest()
         encrypted_password = self.config.get("Account", "password")
 
-        return encrypted_password == encrypted_recv
+        return encrypted_password == password

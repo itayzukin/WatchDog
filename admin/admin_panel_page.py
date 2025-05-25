@@ -9,6 +9,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QPixmap, QImage
 from windows.base_window import BaseWindow
 import admin.stream_client.global_vars as gv
+import os
 
 FPS = 60
 
@@ -25,9 +26,6 @@ class AdminPanelPage(BaseWindow):
         super().__init__()
         self.parent_window = parent_window
 
-        self.input_listener_toggle = False
-        self.audio_strean_toggle = False
-
         main_layout = QVBoxLayout()
 
         # QLabel for displaying the live feed
@@ -36,6 +34,9 @@ class AdminPanelPage(BaseWindow):
         self.image_widget.setScaledContents(False)
         self.image_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
         main_layout.addWidget(self.image_widget)
+
+        btn_back = QPushButton("Return to connetion panel")
+        btn_back.clicked.connect(self.return_admin_default)
 
         widget = QWidget()
         widget.setLayout(main_layout)
@@ -47,6 +48,9 @@ class AdminPanelPage(BaseWindow):
         self.timer.start(1000 // FPS)
 
         self.show()
+    
+    def return_admin_default(self):
+        self.parent_window.go_to_admin_default()
 
     def update_image(self):
         """

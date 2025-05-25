@@ -73,6 +73,9 @@ class MainAppWindow(QMainWindow):
 
     def go_to_admin_panel(self):
         self.stack.setCurrentWidget(self.admin_panel)
+
+    def go_to_setup(self):
+        self.stack.setCurrentWidget(self.initial_setup)
     
     def closeEvent(self, event: QCloseEvent):
         if isinstance(self.stack.currentWidget(), UserDefaultPage):

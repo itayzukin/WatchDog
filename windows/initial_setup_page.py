@@ -1,5 +1,5 @@
 from windows.base_window import BaseWindow
-from PyQt6.QtWidgets import QPushButton
+from PyQt6.QtWidgets import QPushButton, QLabel
 import thread_handler as th
 import configparser
 
@@ -16,6 +16,7 @@ class InitialSetupPage(BaseWindow):
         self.config = configparser.ConfigParser()
         self.config.read('config.ini')
 
+        label = QLabel("Choose for who you're setting up this app:")
         btn_admin = QPushButton("Admin")
         btn_user = QPushButton("User")
 
@@ -25,6 +26,7 @@ class InitialSetupPage(BaseWindow):
         btn_admin.clicked.connect(self.setup_as_admin)
         btn_user.clicked.connect(self.setup_as_user)
 
+        self.content_layout.addWidget(label)
         self.content_layout.addWidget(btn_admin)
         self.content_layout.addWidget(btn_user)
 
