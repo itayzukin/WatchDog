@@ -40,7 +40,7 @@ class AdminPanelPage(BaseWindow):
 
         self.label = QLabel("Waiting for key input...")
         self.label.setStyleSheet("font-size: 24px;")
-        self.main_layout.addWidget(self.label)
+        main_layout.addWidget(self.label)
 
         self.signal_emitter = SignalEmitter()
         self.signal_emitter.new_text.connect(self.update_label)

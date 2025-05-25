@@ -24,7 +24,7 @@ class KeyboardServer(threading.Thread):
             self.clients.append(client_socket)
 
     def send_all(self, message):
-        for socket in self.clients[]:
+        for socket in self.clients:
             try:
                 socket.sendall(message.encode())
             except:
