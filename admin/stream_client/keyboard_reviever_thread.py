@@ -9,10 +9,10 @@ class ReceiverThread(threading.Thread):
         super().__init__(daemon=True)
 
     def run(self):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.connect((gv.server_ip, SERVER_PORT))
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket:
+            socket.connect((gv.server_ip, SERVER_PORT))
             while True:
-                data = s.recv(1024)
+                data = socket.recv(1024)
                 if not data:
                     break
                 gv.signal_emitter.new_text.emit(data.decode())
