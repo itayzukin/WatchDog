@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QPixmap, QImage
 from windows.base_window import BaseWindow
 import admin.stream_client.global_vars as gv
-import os
+from admin.stream_client.signel_emitter import SignalEmitter
 
 FPS = 60
 
@@ -37,6 +37,13 @@ class AdminPanelPage(BaseWindow):
 
         btn_back = QPushButton("Return to connetion panel")
         btn_back.clicked.connect(self.return_admin_default)
+
+        self.label = QLabel("Waiting for key input...")
+        self.label.setStyleSheet("font-size: 24px;")
+        self.main_layout.addWidget(self.label)
+
+        self.signal_emitter = SignalEmitter()
+        self.signal_emitter.new_text.connect(self.update_label)
 
         widget = QWidget()
         widget.setLayout(main_layout)
@@ -71,3 +78,6 @@ class AdminPanelPage(BaseWindow):
                 self.image_widget.setPixmap(scaled_pixmap)
         elif gv.buffered_image == None:
             self.image_widget.setText("Stream is Offline")
+
+    def update_label(self, text):
+        self.label.setText(f"Last key: {text}")
