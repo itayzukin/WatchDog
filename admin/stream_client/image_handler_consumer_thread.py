@@ -1,3 +1,4 @@
+from asyncio import to_thread
 import threading
 import admin.stream_client.global_vars as gv
 
@@ -11,8 +12,9 @@ class ImageHandlerConsumerThread(threading.Thread):
     It waits for SOF/EOF byte flags to reconstruct a complete image.
     """
 
-    def __init__(self):
+    def __init__(self, prod_thread):
         super().__init__(daemon=True)
+        self.prod_thread = prod_thread
 
     def run(self):
         """
@@ -21,7 +23,7 @@ class ImageHandlerConsumerThread(threading.Thread):
         """
         image = b''
 
-        while True:
+        while self.prod_thread.is_alive():
             with gv.condition:
                 if gv.queue.empty():
                     gv.condition.wait()

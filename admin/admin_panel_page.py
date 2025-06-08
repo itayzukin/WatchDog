@@ -10,6 +10,7 @@ from PyQt6.QtGui import QPixmap, QImage
 from PyQt6.QtCore import pyqtSignal, QObject
 from windows.base_window import BaseWindow
 import admin.stream_client.global_vars as gv
+import thread_handler as th
 
 FPS = 60
 
@@ -38,13 +39,21 @@ class AdminPanelPage(BaseWindow):
         btn_back = QPushButton("Return to connetion panel")
         btn_back.clicked.connect(self.return_admin_default)
 
-        self.label = QLabel("Waiting for key input...")
+        text_layout = QVBoxLayout()
+        self.note_label = QLabel("Waiting for key input...")
+        self.label = QLabel("")
         self.label.setStyleSheet("font-size: 12px;")
-        main_layout.addWidget(self.label)
+        text_layout.addWidget(self.note_label)
+        text_layout.addWidget(self.label)
+        text_layout.setAlignment(Qt.AlignmentFlag.AlignBottom)
+        return_button = QPushButton("Return to connection panel")
+        return_button.clicked.connect(self.return_admin_default)
+        text_layout.addWidget(return_button)
+        main_layout.addLayout(text_layout)
 
         self.signal_emitter = SignalEmitter()
         gv.signal_emitter = self.signal_emitter
-        self.signal_emitter.new_text.connect(self.update_label)
+        self.signal_emitter.new_text.connect(self.append_text)
 
         widget = QWidget()
         widget.setLayout(main_layout)
@@ -58,6 +67,7 @@ class AdminPanelPage(BaseWindow):
         self.show()
     
     def return_admin_default(self):
+        th.set_admin_threads()
         self.parent_window.go_to_admin_default()
 
     def update_image(self):
@@ -80,8 +90,21 @@ class AdminPanelPage(BaseWindow):
         elif gv.buffered_image == None:
             self.image_widget.setText("Stream is Offline")
 
-    def update_label(self, text):
-        self.label.setText(f"Last key: {text}")
+    def append_text(self, text):
+        self.note_label.setText("User Input:")
+        max_length = 100
+        current = self.label.text()
+
+        match text:
+            case '[space]':
+                new_text = current + ' '
+            case '[backspace]':
+                new_text = current[:-1:]
+            case _:
+                new_text = current + text
+        if len(new_text) > max_length:
+            new_text = new_text[-max_length:]  # Keep only the last max_length characters
+        self.label.setText(new_text)
 
 class SignalEmitter(QObject):
     new_text = pyqtSignal(str)
