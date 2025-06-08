@@ -31,32 +31,37 @@ class AuthServerThread(threading.Thread):
         print(f"Starting server on port: {TCP_PORT}")
         while True:
             client_socket, address = self.server_socket.accept()
-            data = client_socket.recv(RECV).decode()
-            args = data.split()
+            print("Client connected:", address)
+            threading.Thread(target=self.handle_client, args=(client_socket, address), daemon=True).start()
+        
+            
+    def handle_client(self, client_socket, address):
+        data = client_socket.recv(RECV).decode()
+        args = data.split()
 
-            match args[0]:
-                case "CONNECTION":
-                    if self.check_password(args[1]):
-                        self.addresses[address] = True
-                        client_socket.send("ACCEPTED".encode())
-                        client_socket.close()
-                        gv.admin_ip = address
-                        print(address, "ACCEPTED")
-                    else:
-                        if address in self.addresses:
-                            if self.addresses[address] is False:
-                                client_socket.send("BLOCKED".encode())
-                                client_socket.close()
-                            elif self.addresses[address] == 3:
-                                self.addresses[address] = False
-                            else:
-                                self.addresses[address] += 1
+        match args[0]:
+            case "CONNECTION":
+                if self.check_password(args[1]):
+                    self.addresses[address] = True
+                    client_socket.send("ACCEPTED".encode())
+                    client_socket.close()
+                    gv.admin_ip = address
+                    print(address, "ACCEPTED")
+                else:
+                    if address in self.addresses:
+                        if self.addresses[address] is False:
+                            client_socket.send("BLOCKED".encode())
+                            client_socket.close()
+                        elif self.addresses[address] == 3:
+                            self.addresses[address] = False
                         else:
-                            self.addresses[address] = 1
-                        client_socket.send("INCORRECT".encode())
-                        client_socket.close()
-                case _:
-                    pass
+                            self.addresses[address] += 1
+                    else:
+                        self.addresses[address] = 1
+                    client_socket.send("INCORRECT".encode())
+                    client_socket.close()
+            case _:
+                pass
 
     def check_password(self, password):
         """
